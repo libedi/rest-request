@@ -2,12 +2,33 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.github.libedi</groupId>
   <artifactId>rest-request</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.1.0</version>
   <name>rest-request</name>
   <description>HTTP Request Generator for RestTemplate</description>
   
+  <licenses>
+	<license>
+		<name>The Apache Software License, Version 2.0</name>
+		<url>https://opensource.org/licenses/Apache-2.0</url>
+		<distribution>repo</distribution>
+	</license>
+  </licenses>
+  
+  <developers>
+  	<developer>
+  		<name>libedi</name>
+  		<email>libedi@gmail.com</email>
+  	</developer>
+  </developers>
+  
+  <scm>
+  	<url>https://github.com/libedi/rest-request</url>
+  </scm>
+  
   <properties>
   	<java.version>1.8</java.version>
+  	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  	<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
   
   <dependencies>
@@ -48,4 +69,71 @@
 	    <scope>provided</scope>
 	</dependency>
   </dependencies>
+  
+  <distributionManagement>
+	<snapshotRepository>
+		<id>ossrh</id>
+		<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+	</snapshotRepository>
+	<repository>
+		<id>ossrh</id>
+		<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+	</repository>
+  </distributionManagement>
+  
+  <build>
+  	<plugins>
+  		<plugin>
+  			<groupId>org.apache.maven.plugins</groupId>
+  			<artifactId>maven-compiler-plugin</artifactId>
+  			<version>3.8.1</version>
+  			<configuration>
+	          <source>${java.version}</source>
+	          <target>${java.version}</target>
+	        </configuration>
+  		</plugin>
+  		<plugin>
+  			<groupId>org.apache.maven.plugins</groupId>
+		    <artifactId>maven-source-plugin</artifactId>
+		    <version>3.2.0</version>
+		    <executions>
+		        <execution>
+		        <id>attach-sources</id>
+		        <phase>verify</phase>
+		        <goals>
+		            <goal>jar</goal>
+		        </goals>
+		        </execution>
+		    </executions>
+		</plugin>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+		    <artifactId>maven-javadoc-plugin</artifactId>
+		    <version>3.3.1</version>
+		    <executions>
+		        <execution>
+		        <id>attach-javadocs</id>
+		        <phase>verify</phase>
+		        <goals>
+		            <goal>jar</goal>
+		        </goals>
+		        </execution>
+		    </executions>
+		</plugin>
+		<plugin>
+		    <groupId>org.apache.maven.plugins</groupId>
+		    <artifactId>maven-gpg-plugin</artifactId>
+		    <version>3.0.1</version>
+		    <executions>
+		        <execution>
+		            <id>sign-artifacts</id>
+		            <phase>verify</phase>
+		            <goals>
+		                <goal>sign</goal>
+		            </goals>
+		        </execution>
+		    </executions>
+		</plugin>
+  	</plugins>
+  </build>
 </project>
