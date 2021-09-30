@@ -1,4 +1,4 @@
-package com.github.libedi.restrequest;
+package io.github.libedi.restrequest;
 
 import java.net.URI;
 import java.util.List;
@@ -9,7 +9,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.github.libedi.restrequest.RestRequestSpec.RestRequestBodySpec;
+import io.github.libedi.restrequest.RestRequestSpec.RestRequestBodySpec;
 
 /**
  * REST 요청 명세 : Request Body

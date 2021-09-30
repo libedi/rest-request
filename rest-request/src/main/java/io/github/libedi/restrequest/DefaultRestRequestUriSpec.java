@@ -1,4 +1,4 @@
-package com.github.libedi.restrequest;
+package io.github.libedi.restrequest;
 
 import java.net.URI;
 import java.util.Objects;
@@ -6,8 +6,8 @@ import java.util.Objects;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.github.libedi.restrequest.RestRequestSpec.RestRequestMethodSpec;
-import com.github.libedi.restrequest.RestRequestSpec.RestRequestUriSpec;
+import io.github.libedi.restrequest.RestRequestSpec.RestRequestMethodSpec;
+import io.github.libedi.restrequest.RestRequestSpec.RestRequestUriSpec;
 
 /**
  * REST 요청 명세 : URI

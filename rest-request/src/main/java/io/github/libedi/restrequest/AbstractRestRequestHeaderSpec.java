@@ -1,4 +1,4 @@
-package com.github.libedi.restrequest;
+package io.github.libedi.restrequest;
 
 import java.net.URI;
 
@@ -6,8 +6,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 
-import com.github.libedi.restrequest.RestRequestSpec.RestRequestHeaderSpec;
-
+import io.github.libedi.restrequest.RestRequestSpec.RestRequestHeaderSpec;
 import lombok.AccessLevel;
 import lombok.Getter;
 

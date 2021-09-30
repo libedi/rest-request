@@ -1,4 +1,4 @@
-package com.github.libedi.restrequest;
+package io.github.libedi.restrequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

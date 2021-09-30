@@ -1,13 +1,13 @@
-package com.github.libedi.restrequest;
+package io.github.libedi.restrequest;
 
 import java.net.URI;
 
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 
-import com.github.libedi.restrequest.RestRequestSpec.RestRequestBodySpec;
-import com.github.libedi.restrequest.RestRequestSpec.RestRequestFormSpec;
-import com.github.libedi.restrequest.RestRequestSpec.RestRequestMethodSpec;
+import io.github.libedi.restrequest.RestRequestSpec.RestRequestBodySpec;
+import io.github.libedi.restrequest.RestRequestSpec.RestRequestFormSpec;
+import io.github.libedi.restrequest.RestRequestSpec.RestRequestMethodSpec;
 
 /**
  * REST 요청 명세 : HTTP Method

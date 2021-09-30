@@ -1,4 +1,4 @@
-package com.github.libedi.restrequest;
+package io.github.libedi.restrequest;
 
 import java.lang.reflect.Modifier;
 import java.net.URI;
@@ -17,8 +17,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.github.libedi.restrequest.RestRequestSpec.RestRequestFormSpec;
-
+import io.github.libedi.restrequest.RestRequestSpec.RestRequestFormSpec;
 import lombok.AccessLevel;
 import lombok.Getter;
 
