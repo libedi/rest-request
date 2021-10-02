@@ -1,5 +1,6 @@
 package io.github.libedi.restrequest;
 
+import java.io.Serializable;
 import java.net.URI;
 import java.util.Map;
 
@@ -17,7 +18,9 @@ import lombok.Getter;
  * @param <T>
  */
 @Getter
-public class RestRequest<T> {
+public class RestRequest<T> implements Serializable {
+
+	private static final long serialVersionUID = 6077646798610598311L;
 
 	private final URI uri;
 	private final HttpMethod method;
