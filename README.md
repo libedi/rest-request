@@ -132,3 +132,18 @@ List<ResponseType> response = restTemplate.exchange(request.getUri(),
 - Java 8 or higher
 - Spring Web 4.3 or higher
 
+## 설치
+### Maven
+~~~xml
+<dependency>
+  <groupId>io.github.libedi</groupId>
+  <artifactId>rest-request</artifactId>
+  <version>0.1.1</version>
+</dependency>
+~~~
+### Gradle
+~~~groovy
+dependencies {
+	implementation 'io.github.libedi:rest-request:0.1.1'
+}
+~~~
