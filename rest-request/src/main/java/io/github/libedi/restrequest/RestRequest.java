@@ -43,7 +43,7 @@ public class RestRequest<T> implements Serializable {
 	 * @return
 	 */
 	public static DefaultRestRequestUriSpec<Map<String, Object>> mapResponse() {
-		return new DefaultRestRequestUriSpec<>(new ParameterizedTypeReference<Map<String, Object>>() {});
+		return response(new ParameterizedTypeReference<Map<String, Object>>() {});
 	}
 
 	/**

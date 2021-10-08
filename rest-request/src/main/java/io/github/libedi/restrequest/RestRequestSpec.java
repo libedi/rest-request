@@ -194,9 +194,10 @@ public interface RestRequestSpec<T> {
 		/**
 		 * 파라미터 추가
 		 * 
-		 * @param key
-		 * @param value
+		 * @param key   파라미터 key
+		 * @param value 파라미터 value
 		 * @return
+		 * @throws NullPointerException key가 null인 경우
 		 */
 		S addParameter(String key, Object value);
 
@@ -205,6 +206,7 @@ public interface RestRequestSpec<T> {
 		 * 
 		 * @param multiValueMap
 		 * @return
+		 * @throws NullPointerException multiValueMap 파라미터가 null인 경우
 		 */
 		S putAllParameters(MultiValueMap<String, Object> multiValueMap);
 
@@ -213,6 +215,7 @@ public interface RestRequestSpec<T> {
 		 * 
 		 * @param map
 		 * @return
+		 * @throws NullPointerException map 파라미터가 null인 경우
 		 */
 		S putAllParameters(Map<String, Object> map);
 
@@ -221,6 +224,8 @@ public interface RestRequestSpec<T> {
 		 * 
 		 * @param object
 		 * @return
+		 * @throws NullPointerException     object 파라미터가 null인 경우
+		 * @throws IllegalArgumentException object 파라미터가 Collection인 경우
 		 */
 		S putAllParameters(Object object);
 	}
