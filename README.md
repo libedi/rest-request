@@ -128,6 +128,45 @@ List<ResponseType> response = restTemplate.exchange(request.getUri(),
                   
 ~~~
 
+## RestClientAdapter
+rest-request는 RestRequest와 RestTemplate을 연동하는 클래스인 RestClientAdapter를 제공합니다.  
+RestClientAdapter는 다음과 같이 두가지 방식으로 Bean으로 생성할 수 있습니다.
+~~~java
+@Configuration
+public class WebConfig {
+    @Bean
+    @ConditionalOnMissingBean(RestTemplate.class)
+    public RestClientAdapter restClientAdapter() {
+        return new RestClientAdpater();
+    }
+    
+    @Bean
+    @ConditionalOnBean(RestTemplate.class)
+    public RestClientAdapter restClientAdapter(final RestTemplate restTemplate) {
+        return new RestClientAdapter(restTemplate);
+    }
+}
+~~~
+RestClientAdpater 기본 생성자는 내부적으로 `new RestTemplate()`을 사용하여 생성합니다.  
+혹은 Bean으로 생성한 RestTemplate이 있다면, 해당 RestTemplate을 주입받아 생성합니다.  
+  
+RestClientAdpater는 다음과 같이 사용할 수 있습니다.
+~~~java
+@Service
+public class WebService {
+    @Autowired
+    private RestClientAdpater restClient;
+    
+    public ResponseEntity<Some> getSome(SomeDto dto) {
+        return restClient.execute(RestRequest.response(Some.class)
+                                             .uri("http://www.api.com/some")
+                                             .get()
+                                             .putAllParameters(dto)
+                                             .build());
+    }
+}
+~~~
+
 ## 최소사양
 - Java 8 or higher
 - Spring Web 4.3 or higher
@@ -138,12 +177,12 @@ List<ResponseType> response = restTemplate.exchange(request.getUri(),
 <dependency>
   <groupId>io.github.libedi</groupId>
   <artifactId>rest-request</artifactId>
-  <version>0.1.1</version>
+  <version>0.2.0</version>
 </dependency>
 ~~~
 ### Gradle
 ~~~groovy
 dependencies {
-	implementation 'io.github.libedi:rest-request:0.1.1'
+	implementation 'io.github.libedi:rest-request:0.2.0'
 }
 ~~~
