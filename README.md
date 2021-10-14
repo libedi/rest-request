@@ -71,7 +71,7 @@ RestRequest.response(ResponseType.class)
 ~~~
 - Form Parameter  
 You can add Form Parameters with the `addParameter()`, `putAllParamters()` methods.  
-If you perviously specified `get()` / `delete()`, Query Parameter is generated, and if `post()` / `put()` / `patch()` is specified, Form Data is generated.  
+If you previously specified `get()` / `delete()`, Query Parameter is generated, and if `post()` / `put()` / `patch()` is specified, Form Data is generated.  
 If both Request Body and Form Parameter are set, they are generated as Query Parameters, even if `post()` / `put()` / `patch()` is specified.
 ~~~java
 // Generate a Query Parameter
