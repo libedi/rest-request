@@ -15,7 +15,6 @@ ResponsType response = restTemplate.exchange(request.getUri(),
                                              request.getHttpEntity(),
                                              request.getResponseType());
 ~~~
-위와 같이 RestRequest를 통해, RestTemplate에 필요한 모든 정보를 간편하고 가독성 좋게 생성할 수 있습니다.
 With `RestRequest` as above, you can easily and readably generate all the information you need for `RestTemplate`
 
 ## How to create `RestRequest`
