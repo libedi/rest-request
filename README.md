@@ -1,7 +1,7 @@
 # rest-request
-rest-request는 Spring Web의 RestTemplate을 사용할 경우, 생성해야 할 많은 파라미터를 간편하게 만들어주는 도구입니다.
+rest-request is a tool that makes it easy to create many parameters that need to be generated when using Spring Web's `RestTemplate`.  
 
-rest-request는 Spring Webflux의 WebClient에서 영감을 받아, 이와 유사하게 메소드 체이닝 방식으로 HTTP Header, Query Parameter, Form Data, Request Body 등을 생성할 수 있습니다.
+rest-request is inspired by Spring Webflux's WebClient, which similarly allows method-chaining methods to create HTTP Headers, Query Parameters, Form Data, Request Body, and more.
 ~~~java
 RestRequest<ResponseType> request = RestRequest.response(ResponseType.class)
                                                .uri("http://www.api.com/resources")
@@ -16,41 +16,42 @@ ResponsType response = restTemplate.exchange(request.getUri(),
                                              request.getResponseType());
 ~~~
 위와 같이 RestRequest를 통해, RestTemplate에 필요한 모든 정보를 간편하고 가독성 좋게 생성할 수 있습니다.
+With `RestRequest` as above, you can easily and readably generate all the information you need for `RestTemplate`
 
-## RestRequest 생성방법
-rest-request는 다음과 같은 순서에 의해 생성합니다.
+## How to create `RestRequest`
+rest-request is generated in the following order:
 
-### 1. 응답 타입
-응답 타입은 3가지 방식으로 설정할 수 있습니다.
-- 1. 기본 설정 : `Map<String, Object>`
-- 2. T타입 설정 : `Class<T>`
-- 3. T타입 제네릭 설정 : `ParameterizedTypeReference<T>`
+### 1. Response Type
+There are three types of responses:
+- 1. Preference : `Map<String, Object>`
+- 2. T type : `Class<T>`
+- 3. Generic T type : `ParameterizedTypeReference<T>`
 ~~~java
-// 1. 기본설정 : Map<String, Object>
+// 1. Preference : Map<String, Object>
 RestRequest.mapResponse()
 
-// 2. T타입 설정 : Class<T>
+// 2. T type : Class<T>
 RestRequest.response(ResponseType.class)
 
-// 3. T타입 제네릭 설정 : ParameterizedTypeReference<T>
+// 3. Generic T type : ParameterizedTypeReference<T>
 RestRequest.response(new ParameterizedTypeReference<List<ResponseType>>(){})
 ~~~
 
-### 2. 요청 URI
-요청할 URI는 `java.net.URI` 또는 `java.lang.String` 타입의 파라미터를 지원합니다.
+### 2. Request URI
+The URI to request supports paramters of the `java.net.URI` or `String` type.
 ~~~java
-// java.net.URI 타입
+// java.net.URI type
 URI uri = URI.create("http://www.api.com/resources");
 RestRequest.response(ResponseType.class)
            .uri(uri)
 
-// java.lang.String 타입
+// String type
 RestRequest.response(ResponseType.class)
            .uri("http://www.api.com/resources")
 ~~~
 
 ### 3. HTTP Method
-HTTP Method는 직관적인 이름의 메소드명으로 지정할 수 있습니다. 지원하는 메소드는 GET / POST / PUT / PATCH / DELETE 입니다. 여기서 POST / PUT / PATCH 방식은 이후에 Request Body를 설정가능하게 합니다.
+HTTP Method can be specified by a method name with an intuitive name. The methods that supports it ar GET / POST / PUT / PATCH / DELETE. Here, the POST / PUT / PATCH method allows you to set the Request Body in the near time.
 ~~~java
 RestRequest.response(ResponseType.class)
            .uri(uri)
@@ -58,55 +59,55 @@ RestRequest.response(ResponseType.class)
 ~~~
 
 ### 4. HTTP Header / Query Parameter / Form Data / Request Body
-이후에는 HTTP Header, Query Parameter, Form Data, Request Body를 설정할 수 있습니다.
+Afterwards, you can set HTTP Header, Query Paramter, Form Data, and Request Body.
 
-- HTTP Header : HTTP Header는 addHeader(), accept(), contentType() 메소드로 추가할 수 있습니다.
+- HTTP Header : HTTP Header can be added as an `addHeader()`, `accept()`, and `contentType()` methods.
 ~~~java
 RestRequest.response(ResponseType.class)
            .uri(uri)
            .get()
            .addHeader("headerName", "headerValue")
-           .accept(MediaType.APPLICATION_JSON)  // 지원타입 : MediaType, String
-           .contentType("application/json")     // 지원타입 : MediaType, String
+           .accept(MediaType.APPLICATION_JSON)  // Support type : MediaType, String
+           .contentType("application/json")     // Support type : MediaType, String
 ~~~
 - Form Parameter  
-addParameter(), putAllParameters() 메소드로 Form Parameter를 추가할 수 있습니다.  
-이전에 get() / delete()를 지정했다면, Query Parameter가 생성되고, post() / put() / patch()를 지정했다면, Form Data가 생성됩니다.  
-만약, post() / put() / patch()를 지정했더라도, Request Body와 Form Parameter 둘 다 설정되었다면, Query Parameter로 생성됩니다.
+You can add Form Parameters with the `addParameter()`, `putAllParamters()` methods.  
+If you perviously specified `get()` / `delete()`, Query Parameter is generated, and if `post()` / `put()` / `patch()` is specified, Form Data is generated.  
+If both Request Body and Form Parameter are set, they are generated as Query Parameters, even if `post()` / `put()` / `patch()` is specified.
 ~~~java
-// Query Parameter 생성
+// Generate a Query Parameter
 RestRequest.response(ResponseType.class)
            .uri(uri)
            .get()
-           .addParameter("paramKey", "paramValue")  // Query Parameter 추가 : key-value 방식
-           .putAllParameters(multiValueMap)         // Query Parameter 추가 : MultiValueMap<String, Object>
-           .putAllParameters(map)                   // Query Parameter 추가 : Map<String, Object>
-           .putAllParameters(object)                // Query Parameter 추가 : Object
+           .addParameter("paramKey", "paramValue")  // Add Query Parameter : key-value
+           .putAllParameters(multiValueMap)         // Add Query Parameter : MultiValueMap<String, Object>
+           .putAllParameters(map)                   // Add Query Parameter : Map<String, Object>
+           .putAllParameters(object)                // Add Query Parameter : Object
 
-// Form Data 생성
+// Generate Form Data
 RestRequest.response(ResponseType.class)
            .uri(uri)
            .post()
            .addParameter("paramKey", "paramValue")
 ~~~
-- Request Body : body() 메소드로 설정할 수 있습니다. (post() / put() / patch() 지정시에만 body() 메소드를 호출할 수 있습니다.)
+- Request Body : You can set it as a `body()` method. (You can call the `body()` method only when specifying `post()` / `put()` / `patch()` methods.)
 ~~~java
 RestRequest.response(ResponseType.class)
            .put()
-           .addParameter("queryParamKey", "queryParamValue")  // Query Parameter로 생성
+           .addParameter("queryParamKey", "queryParamValue")  // Generate Query Parameter
            .body(requestBodyObject)
 ~~~
 
 ### 5. build()
-최종적으로 build()를 호출하여 RestRequest를 생성합니다.  
-RestRequest는 아래의 속성들을 불러올 수 있습니다.
+Finally, call `build()` method to generate `RestRequest`.  
+`RestRequest` can load the following properties:
 - `URI`
 - `HttpMethod`
 - `HttpEntity`
 - `Class<T>`
 - `ParameterizedTypeReference<T>`
 ~~~java
-// Class<T> 지정시
+// Class<T> when specifying
 RestRequest<ResponseType> request = RestRequest.response(ResponseType.class)
                                                .uri(uri)
                                                .get()
@@ -116,7 +117,7 @@ ResponseType response = restTemplate.exchange(request.getUri(),
                                               request.getHttpEntity(),
                                               request.getResponseType());
 
-// ParameterizedTypeReference<T> 지정시
+// ParameterizedTypeReference<T> when specifying
 RestRequest<List<ResponseType>> request = RestRequest.response(new ParameterizedTypeReference<List<ResponseType>>(){})
                                                .uri(uri)
                                                .get()
@@ -129,8 +130,8 @@ List<ResponseType> response = restTemplate.exchange(request.getUri(),
 ~~~
 
 ## RestClientAdapter
-rest-request는 RestRequest와 RestTemplate을 연동하는 클래스인 RestClientAdapter를 제공합니다.  
-RestClientAdapter는 다음과 같이 두가지 방식으로 Bean으로 생성할 수 있습니다.
+rest-request provides `RestClientAdapter`, a class that works with `RestRequest` and `RestTemplate`.  
+`RestClientAdapter` can be generated as a Bean in two ways:
 ~~~java
 @Configuration
 public class WebConfig {
@@ -147,10 +148,10 @@ public class WebConfig {
     }
 }
 ~~~
-RestClientAdpater 기본 생성자는 내부적으로 `new RestTemplate()`을 사용하여 생성합니다.  
-혹은 Bean으로 생성한 RestTemplate이 있다면, 해당 RestTemplate을 주입받아 생성합니다.  
+`RestClientAdapter` default constructor is internally generated using `new RestTemplate()`.  
+Or, if you have `RestTemplate` generated by Bean, you're injected with that `RestTemplate`.  
   
-RestClientAdpater는 다음과 같이 사용할 수 있습니다.
+`RestClientAdapter` can be used as follows:
 ~~~java
 @Service
 public class WebService {
@@ -167,22 +168,22 @@ public class WebService {
 }
 ~~~
 
-## 최소사양
+## Requirements
 - Java 8 or higher
-- Spring Web 4.3 or higher
+- Spring Web 3.2 or higher
 
-## 설치
+## Install
 ### Maven
 ~~~xml
 <dependency>
-  <groupId>io.github.libedi</groupId>
-  <artifactId>rest-request</artifactId>
-  <version>0.2.0</version>
+    <groupId>io.github.libedi</groupId>
+    <artifactId>rest-request</artifactId>
+    <version>0.2.0</version>
 </dependency>
 ~~~
 ### Gradle
 ~~~groovy
 dependencies {
-	implementation 'io.github.libedi:rest-request:0.2.0'
+    implementation 'io.github.libedi:rest-request:0.2.0'
 }
 ~~~
