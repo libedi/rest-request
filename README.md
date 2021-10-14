@@ -15,7 +15,7 @@ ResponsType response = restTemplate.exchange(request.getUri(),
                                              request.getHttpEntity(),
                                              request.getResponseType());
 ~~~
-With `RestRequest` as above, you can easily and readably generate all the information you need for `RestTemplate`
+With `RestRequest` as above, you can easily and readably generate all the information you need for `RestTemplate`.
 
 ## How to create `RestRequest`
 rest-request is generated in the following order:
@@ -50,15 +50,15 @@ RestRequest.response(ResponseType.class)
 ~~~
 
 ### 3. HTTP Method
-HTTP Method can be specified by a method name with an intuitive name. The methods that supports it ar GET / POST / PUT / PATCH / DELETE. Here, the POST / PUT / PATCH method allows you to set the Request Body in the near time.
+HTTP Method can be specified by a method name with an intuitive name. The methods that supports it are GET / POST / PUT / PATCH / DELETE. Here, the POST / PUT / PATCH method allows you to set the Request Body in the near time.
 ~~~java
 RestRequest.response(ResponseType.class)
            .uri(uri)
            .get() / .post() / .put() / .patch() / .delete()
 ~~~
 
-### 4. HTTP Header / Query Parameter / Form Data / Request Body
-Afterwards, you can set HTTP Header, Query Paramter, Form Data, and Request Body.
+### 4. HTTP Headers / Query Parameters / Form Data / Request Body
+Afterwards, you can set HTTP Headers, Query Paramters, Form Data, and Request Body.
 
 - HTTP Header : HTTP Header can be added as an `addHeader()`, `accept()`, and `contentType()` methods.
 ~~~java
