@@ -4,7 +4,6 @@ import java.net.URI;
 import java.util.Objects;
 
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import io.github.libedi.restrequest.RestRequestSpec.RestRequestMethodSpec;
 import io.github.libedi.restrequest.RestRequestSpec.RestRequestUriSpec;
@@ -32,14 +31,6 @@ public class DefaultRestRequestUriSpec<T> implements RestRequestUriSpec<T> {
 	@Override
 	public RestRequestMethodSpec<T> uri(final URI uri) {
 		return new DefaultRestRequestMethodSpec<>(Objects.requireNonNull(uri, () -> "URI must not be null."),
-				responseType, typeReference);
-	}
-
-	@Override
-	public RestRequestMethodSpec<T> uri(final URI uri, final Object... uriVariables) {
-		return new DefaultRestRequestMethodSpec<>(
-				UriComponentsBuilder.fromUri(Objects.requireNonNull(uri, () -> "URI must not be null."))
-						.buildAndExpand(uriVariables).toUri(),
 				responseType, typeReference);
 	}
 

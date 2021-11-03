@@ -6,6 +6,7 @@ import java.util.Objects;
 
 import org.springframework.http.MediaType;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * REST 요청 명세
@@ -57,17 +58,9 @@ public interface RestRequestSpec<T> {
 		 * @param uriVariables
 		 * @return
 		 */
-		RestRequestMethodSpec<T> uri(URI uri, Object... uriVariables);
-
-		/**
-		 * 요청 URI 설정
-		 * 
-		 * @param uri
-		 * @param uriVariables
-		 * @return
-		 */
 		default RestRequestMethodSpec<T> uri(final String uri, final Object... uriVariables) {
-			return uri(URI.create(Objects.requireNonNull(uri, () -> "URI must not be null.")), uriVariables);
+			return uri(UriComponentsBuilder.fromUriString(Objects.requireNonNull(uri, () -> "URI must not be null."))
+					.buildAndExpand(uriVariables).encode().toUri());
 		}
 	}
 
