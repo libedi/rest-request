@@ -58,7 +58,7 @@ RestRequest.response(ResponseType.class)
 ~~~
 
 ### 4. HTTP Headers / Query Parameters / Form Data / Request Body
-Afterwards, you can set HTTP Headers, Query Paramters, Form Data, and Request Body.
+Afterwards, you can set HTTP Headers, Query Parameters, Form Datas, and Request Body.
 
 - HTTP Header : HTTP Header can be added as an `addHeader()`, `accept()`, and `contentType()` methods.
 ~~~java
@@ -83,7 +83,7 @@ RestRequest.response(ResponseType.class)
            .putAllParameters(map)                   // Add Query Parameter : Map<String, Object>
            .putAllParameters(object)                // Add Query Parameter : Object
 
-// Generate Form Data
+// Generate Form Datas
 RestRequest.response(ResponseType.class)
            .uri(uri)
            .post()
