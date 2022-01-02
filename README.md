@@ -1,7 +1,7 @@
 # rest-request
-rest-request is a tool that makes it easy to create many parameters that need to be generated when using Spring Web's `RestTemplate`.  
+***rest-request*** is a tool that makes it easy to create many parameters that need to be generated when using Spring Web's `RestTemplate`.  
 
-rest-request is inspired by Spring Webflux's WebClient, which similarly allows method-chaining methods to create HTTP Headers, Query Parameters, Form Data, Request Body, and more.
+***rest-request*** is inspired by Spring Webflux's WebClient, which similarly allows method-chaining methods to create HTTP Headers, Query Parameters, Form Data, Request Body, and more.
 ~~~java
 RestRequest<ResponseType> request = RestRequest.response(ResponseType.class)
                                                .uri("http://www.api.com/resources")
@@ -18,7 +18,7 @@ ResponsType response = restTemplate.exchange(request.getUri(),
 With `RestRequest` as above, you can easily and readably generate all the information you need for `RestTemplate`.
 
 ## How to create `RestRequest`
-rest-request is generated in the following order:
+***rest-request*** is generated in the following order:
 
 ### 1. Response Type
 There are three types of responses:
@@ -129,7 +129,7 @@ List<ResponseType> response = restTemplate.exchange(request.getUri(),
 ~~~
 
 ## RestClientAdapter
-rest-request provides `RestClientAdapter`, a class that works with `RestRequest` and `RestTemplate`.  
+***rest-request*** provides `RestClientAdapter`, a class that works with `RestRequest` and `RestTemplate`.  
 `RestClientAdapter` can be generated as a Bean in two ways:
 ~~~java
 @Configuration
