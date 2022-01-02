@@ -57,7 +57,7 @@ RestRequest.response(ResponseType.class)
            .get() / .post() / .put() / .patch() / .delete()
 ~~~
 
-### 4. HTTP Headers / Query Parameters / Form Data / Request Body
+### 4. HTTP Headers / Query Parameters / Form Datas / Request Body
 Afterwards, you can set HTTP Headers, Query Parameters, Form Datas, and Request Body.
 
 - HTTP Header : HTTP Header can be added as an `addHeader()`, `accept()`, and `contentType()` methods.
