@@ -67,5 +67,14 @@ public class RestRequest<T> implements Serializable {
 	public static <T> DefaultRestRequestUriSpec<T> response(final ParameterizedTypeReference<T> typeReference) {
 		return new DefaultRestRequestUriSpec<>(typeReference);
 	}
+	
+	/**
+	 * 응답값이 없는 경우
+	 * 
+	 * @return
+	 */
+	public static DefaultRestRequestUriSpec<Void> nonResponse() {
+		return new DefaultRestRequestUriSpec<>(Void.class);
+	}
 
 }
