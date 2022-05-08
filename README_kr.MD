@@ -25,6 +25,7 @@ ResponsType response = restTemplate.exchange(request.getUri(),
 - 1. 기본 설정 : `Map<String, Object>`
 - 2. T타입 설정 : `Class<T>`
 - 3. T타입 제네릭 설정 : `ParameterizedTypeReference<T>`
+- 4. Void타입 : `Class<Void>`
 ~~~java
 // 1. 기본설정 : Map<String, Object>
 RestRequest.mapResponse()
@@ -34,6 +35,9 @@ RestRequest.response(ResponseType.class)
 
 // 3. T타입 제네릭 설정 : ParameterizedTypeReference<T>
 RestRequest.response(new ParameterizedTypeReference<List<ResponseType>>(){})
+
+// 4. Void타입 설정 : Class<Void>
+RestRequest.nonResponse()
 ~~~
 
 ### 2. 요청 URI
@@ -118,14 +122,13 @@ ResponseType response = restTemplate.exchange(request.getUri(),
 
 // ParameterizedTypeReference<T> 지정시
 RestRequest<List<ResponseType>> request = RestRequest.response(new ParameterizedTypeReference<List<ResponseType>>(){})
-                                               .uri(uri)
-                                               .get()
-                                               .build();
+                                                     .uri(uri)
+                                                     .get()
+                                                     .build();
 List<ResponseType> response = restTemplate.exchange(request.getUri(),
                                                     request.getMethod(),
                                                     request.getHttpEntity(),
                                                     request.getTypeReference());
-                  
 ~~~
 
 ## RestClientAdapter
@@ -157,12 +160,20 @@ public class WebService {
     @Autowired
     private RestClientAdpater restClient;
     
-    public ResponseEntity<Some> getSome(SomeDto dto) {
-        return restClient.execute(RestRequest.response(Some.class)
-                                             .uri("http://www.api.com/some")
+    public ResponseEntity<Resource> getSome(ResourceDto dto) {
+        return restClient.execute(RestRequest.response(Resource.class)
+                                             .uri("http://www.api.com/resources")
                                              .get()
                                              .putAllParameters(dto)
                                              .build());
+    }
+    
+    public Resource postSome(Resource resource) {
+        return restClient.executeForObject(RestRequest.response(Resource.class)
+                                                      .uri("http://www.api.com/resources")
+                                                      .post()
+                                                      .body(resource)
+                                                      .build());
     }
 }
 ~~~
@@ -177,12 +188,12 @@ public class WebService {
 <dependency>
     <groupId>io.github.libedi</groupId>
     <artifactId>rest-request</artifactId>
-    <version>0.3.0</version>
+    <version>0.4.0</version>
 </dependency>
 ~~~
 ### Gradle
 ~~~groovy
 dependencies {
-    implementation 'io.github.libedi:rest-request:0.3.0'
+    implementation 'io.github.libedi:rest-request:0.4.0'
 }
 ~~~
