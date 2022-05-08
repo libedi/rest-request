@@ -122,14 +122,13 @@ ResponseType response = restTemplate.exchange(request.getUri(),
 
 // ParameterizedTypeReference<T> when specifying
 RestRequest<List<ResponseType>> request = RestRequest.response(new ParameterizedTypeReference<List<ResponseType>>(){})
-                                               .uri(uri)
-                                               .get()
-                                               .build();
+                                                     .uri(uri)
+                                                     .get()
+                                                     .build();
 List<ResponseType> response = restTemplate.exchange(request.getUri(),
                                                     request.getMethod(),
                                                     request.getHttpEntity(),
                                                     request.getTypeReference());
-                  
 ~~~
 
 ## RestClientAdapter
