@@ -25,6 +25,7 @@ There are three types of responses:
 - 1. Preference : `Map<String, Object>`
 - 2. T type : `Class<T>`
 - 3. Generic T type : `ParameterizedTypeReference<T>`
+- 4. Void type : `Class<Void>`
 ~~~java
 // 1. Preference : Map<String, Object>
 RestRequest.mapResponse()
@@ -34,6 +35,9 @@ RestRequest.response(ResponseType.class)
 
 // 3. Generic T type : ParameterizedTypeReference<T>
 RestRequest.response(new ParameterizedTypeReference<List<ResponseType>>(){})
+
+// 4. Void type : Class<Void>
+RestRequest.nonResponse()
 ~~~
 
 ### 2. Request URI
@@ -157,12 +161,20 @@ public class WebService {
     @Autowired
     private RestClientAdpater restClient;
     
-    public ResponseEntity<Some> getSome(SomeDto dto) {
-        return restClient.execute(RestRequest.response(Some.class)
-                                             .uri("http://www.api.com/some")
+    public ResponseEntity<Resource> getSome(ResourceDto dto) {
+        return restClient.execute(RestRequest.response(Resource.class)
+                                             .uri("http://www.api.com/resources")
                                              .get()
                                              .putAllParameters(dto)
                                              .build());
+    }
+    
+    public Resource postSome(Resource resource) {
+        return restClient.executeForObject(RestRequest.response(Resource.class)
+                                                      .uri("http://www.api.com/resources")
+                                                      .post()
+                                                      .body(resource)
+                                                      .build());
     }
 }
 ~~~
@@ -177,12 +189,12 @@ public class WebService {
 <dependency>
     <groupId>io.github.libedi</groupId>
     <artifactId>rest-request</artifactId>
-    <version>0.3.0</version>
+    <version>0.4.0</version>
 </dependency>
 ~~~
 ### Gradle
 ~~~groovy
 dependencies {
-    implementation 'io.github.libedi:rest-request:0.3.0'
+    implementation 'io.github.libedi:rest-request:0.4.0'
 }
 ~~~
