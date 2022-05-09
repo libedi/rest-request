@@ -9,7 +9,7 @@ import org.springframework.web.client.RestTemplate;
  * @author "Sangjun,Park"
  *
  */
-public class DefaultRestClientAdapter implements RestClientAdapter {
+class DefaultRestClientAdapter implements RestClientAdapter {
 
 	private final RestTemplate restTemplate;
 

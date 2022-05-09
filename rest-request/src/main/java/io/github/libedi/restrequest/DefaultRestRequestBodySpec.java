@@ -18,7 +18,7 @@ import io.github.libedi.restrequest.RestRequestSpec.RestRequestBodySpec;
  *
  * @param <T>
  */
-public class DefaultRestRequestBodySpec<T> extends DefaultRestRequestFormSpec<T, RestRequestBodySpec<T>>
+class DefaultRestRequestBodySpec<T> extends DefaultRestRequestFormSpec<T, RestRequestBodySpec<T>>
 		implements RestRequestBodySpec<T> {
 
 	private Object body;
