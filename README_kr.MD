@@ -188,12 +188,12 @@ public class WebService {
 <dependency>
     <groupId>io.github.libedi</groupId>
     <artifactId>rest-request</artifactId>
-    <version>0.4.0</version>
+    <version>0.4.3</version>
 </dependency>
 ~~~
 ### Gradle
 ~~~groovy
 dependencies {
-    implementation 'io.github.libedi:rest-request:0.4.0'
+    implementation 'io.github.libedi:rest-request:0.4.3'
 }
 ~~~
