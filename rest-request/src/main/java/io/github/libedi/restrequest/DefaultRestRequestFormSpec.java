@@ -1,7 +1,9 @@
 package io.github.libedi.restrequest;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.net.URI;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -82,21 +84,27 @@ class DefaultRestRequestFormSpec<T, S extends RestRequestFormSpec<T, S>>
 		Assert.isTrue((object instanceof Collection) == false, "Parameter must not be Collection.");
 
 		ReflectionUtils.doWithFields(object.getClass(),
-				field -> {
-					field.setAccessible(true);
-					final String name = field.getName();
-					final Object value = field.get(object);
-					if (value instanceof Collection) {
-						((Collection<?>) value).forEach(el -> addParameter(name, el));
-					} else {
-						addParameter(name, value);
-					}
-				},
+                field -> handleParameterValue(field, object),
 				field -> Modifier.isStatic(field.getModifiers()) == false);
 		return (S) this;
 	}
 
-	@Override
+    private void handleParameterValue(final Field field, final Object object)
+            throws IllegalArgumentException, IllegalAccessException {
+        field.setAccessible(true);
+        final String name = field.getName();
+        final Object value = field.get(object);
+
+        if (value instanceof Collection) {
+            ((Collection<?>) value).forEach(el -> addParameter(name, el));
+        } else if (value != null && value.getClass().isArray()) {
+            Arrays.stream((Object[]) value).forEach(el -> addParameter(name, el));
+        } else {
+            addParameter(name, value);
+        }
+    }
+
+    @Override
 	public RestRequest<T> build() {
 		return new RestRequest<>(getUriWithQueryParam(), getMethod(), new HttpEntity<>(getHeaders()), getResponseType(),
 				getTypeReference());
