@@ -128,6 +128,18 @@ public interface RestRequestSpec<T> {
 		 */
 		S addHeader(String headerName, String headerValue);
 
+        /**
+         * HTTP Header 추가
+         * 
+         * @param headerName
+         * @param headerValue
+         * @return
+         */
+        default S addHeader(final MediaType headerName, final String headerValue) {
+            return addHeader(Objects.requireNonNull(headerName, () -> "Header name must not be null.").toString(),
+                    headerValue);
+        }
+
 		/**
 		 * HTTP Header 추가
 		 * 
@@ -136,6 +148,18 @@ public interface RestRequestSpec<T> {
 		 * @return
 		 */
 		S addHeaders(String headerName, String... headerValues);
+
+        /**
+         * HTTP Header 추가
+         * 
+         * @param headerName
+         * @param headerValues
+         * @return
+         */
+        default S addHeaders(final MediaType headerName, final String... headerValues) {
+            return addHeaders(Objects.requireNonNull(headerName, () -> "Header name must not be null.").toString(),
+                    headerValues);
+        }
 
 		/**
 		 * HTTP Header 추가 : Accept
@@ -152,7 +176,8 @@ public interface RestRequestSpec<T> {
 		 * @return
 		 */
 		default S accept(final MediaType acceptableMediaType) {
-			return accept(acceptableMediaType.toString());
+            return accept(Objects.requireNonNull(acceptableMediaType, () -> "acceptableMediaType must not be null.")
+                    .toString());
 		}
 
 		/**
@@ -169,8 +194,8 @@ public interface RestRequestSpec<T> {
 		 * @param contentType
 		 * @return
 		 */
-		default S contentType(MediaType contentType) {
-			return contentType(contentType.toString());
+        default S contentType(final MediaType contentType) {
+            return contentType(Objects.requireNonNull(contentType, () -> "contentType must not be null.").toString());
 		}
 	}
 
