@@ -19,7 +19,7 @@ import lombok.Getter;
  * @param <S>
  */
 @Getter(AccessLevel.PACKAGE)
-public abstract class AbstractRestRequestHeaderSpec<T, S extends RestRequestHeaderSpec<T, S>>
+abstract class AbstractRestRequestHeaderSpec<T, S extends RestRequestHeaderSpec<T, S>>
 		implements RestRequestHeaderSpec<T, S> {
 
 	private final URI uri;
