@@ -168,7 +168,7 @@ public class WebService {
                                              .build());
     }
     
-    public Resource postSome(Resource resource) {
+    public Optional<Resource> postSome(Resource resource) {
         return restClient.executeForObject(RestRequest.response(Resource.class)
                                                       .uri("http://www.api.com/resources")
                                                       .post()
@@ -188,12 +188,12 @@ public class WebService {
 <dependency>
     <groupId>io.github.libedi</groupId>
     <artifactId>rest-request</artifactId>
-    <version>0.4.3</version>
+    <version>1.0.0</version>
 </dependency>
 ~~~
 ### Gradle
 ~~~groovy
 dependencies {
-    implementation 'io.github.libedi:rest-request:0.4.3'
+    implementation 'io.github.libedi:rest-request:1.0.0'
 }
 ~~~
