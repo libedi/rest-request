@@ -9,7 +9,7 @@ import org.springframework.web.client.RestTemplate;
  * @author "Sangjun,Park"
  *
  */
-class DefaultRestClientAdapter implements RestClientAdapter {
+public class DefaultRestClientAdapter implements RestClientAdapter {
 
 	private final RestTemplate restTemplate;
 
@@ -36,6 +36,9 @@ class DefaultRestClientAdapter implements RestClientAdapter {
 
 	@Override
 	public <T> ResponseEntity<T> execute(final RestRequest<T> request) {
+        if (request == null) {
+            throw new IllegalArgumentException("RestRequest must not be null.");
+        }
 		if (request.getTypeReference() == null) {
 			return restTemplate.exchange(request.getUri(), request.getMethod(), request.getHttpEntity(),
 					request.getResponseType());
