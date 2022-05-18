@@ -16,7 +16,7 @@ import io.github.libedi.restrequest.RestRequestSpec.RestRequestMethodSpec;
  *
  * @param <T>
  */
-class DefaultRestRequestMethodSpec<T> implements RestRequestMethodSpec<T> {
+public class DefaultRestRequestMethodSpec<T> implements RestRequestMethodSpec<T> {
 
 	private final URI uri;
 	private final Class<T> responseType;
