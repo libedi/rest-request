@@ -211,6 +211,31 @@ public interface RestRequestSpec<T> {
         default S contentType(final String contentType) {
             return contentType(StringUtils.hasText(contentType) ? MediaType.valueOf(contentType) : null);
 		}
+
+        /**
+         * HTTP Header 설정 : Authorization
+         * 
+         * @param authValue
+         * @return
+         */
+        S authorization(String authValue);
+
+        /**
+         * HTTP Header 설정 : Basic Authorization
+         * 
+         * @param username
+         * @param password
+         * @return
+         */
+        S basicAuth(String username, String password);
+
+        /**
+         * HTTP Header 설정 : Bearer Token
+         * 
+         * @param token
+         * @return
+         */
+        S bearerToken(String token);
 	}
 
 	/**

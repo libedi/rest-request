@@ -76,4 +76,25 @@ public abstract class AbstractRestRequestHeaderSpec<T, S extends RestRequestHead
 		return (S) this;
 	}
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public S authorization(final String authValue) {
+        headers.set(HttpHeaders.AUTHORIZATION, authValue);
+        return (S) this;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public S basicAuth(final String username, final String password) {
+        headers.setBasicAuth(username, password);
+        return (S) this;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public S bearerToken(final String token) {
+        headers.setBearerAuth(token);
+        return (S) this;
+    }
+
 }
