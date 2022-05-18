@@ -32,7 +32,7 @@ import lombok.Getter;
  * @param <S>
  */
 @Getter(AccessLevel.PACKAGE)
-class DefaultRestRequestFormSpec<T, S extends RestRequestFormSpec<T, S>>
+public class DefaultRestRequestFormSpec<T, S extends RestRequestFormSpec<T, S>>
 		extends AbstractRestRequestHeaderSpec<T, S>
 		implements RestRequestFormSpec<T, S> {
 

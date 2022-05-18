@@ -1,4 +1,4 @@
-package io.github.libedi.restrequest;
+package io.github.libedi.restrequest.test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -13,6 +13,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import io.github.libedi.restrequest.RestRequest;
 import lombok.Builder;
 import lombok.Getter;
 
