@@ -1,11 +1,15 @@
 package io.github.libedi.restrequest;
 
 import java.net.URI;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 import org.springframework.http.MediaType;
+import org.springframework.lang.Nullable;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
@@ -161,42 +165,77 @@ public interface RestRequestSpec<T> {
                     headerValues);
         }
 
-		/**
-		 * HTTP Header 추가 : Accept
-		 * 
-		 * @param acceptableMediaType
-		 * @return
-		 */
-		S accept(String acceptableMediaType);
+        /**
+         * HTTP Header 설정 : Accept
+         * 
+         * @param acceptableMediaTypes
+         * @return
+         */
+        S accept(List<MediaType> acceptableMediaTypes);
+
+        /**
+         * HTTP Header 설정 : Accept
+         * 
+         * @param acceptableMediaType
+         * @return
+         */
+        default S accept(final MediaType acceptableMediaType) {
+            return accept(Arrays.asList(
+                    Objects.requireNonNull(acceptableMediaType, () -> "acceptableMediaType must not be null.")));
+        }
 
 		/**
-		 * HTTP Header 추가 : Accept
-		 * 
-		 * @param acceptableMediaType
-		 * @return
-		 */
-		default S accept(final MediaType acceptableMediaType) {
-            return accept(Objects.requireNonNull(acceptableMediaType, () -> "acceptableMediaType must not be null.")
-                    .toString());
+         * HTTP Header 설정 : Accept
+         * 
+         * @param acceptableMediaType
+         * @return
+         */
+        default S accept(final String acceptableMediaType) {
+            return accept(MediaType.valueOf(acceptableMediaType));
+        }
+
+        /**
+         * HTTP Header 설정 : Content-Type
+         * 
+         * @param contentType
+         * @return
+         */
+        S contentType(@Nullable MediaType contentType);
+
+		/**
+         * HTTP Header 설정 : Content-Type
+         * 
+         * @param contentType
+         * @return
+         */
+        default S contentType(final String contentType) {
+            return contentType(StringUtils.hasText(contentType) ? MediaType.valueOf(contentType) : null);
 		}
 
-		/**
-		 * HTTP Header 추가 : Content-Type
-		 * 
-		 * @param contentType
-		 * @return
-		 */
-		S contentType(String contentType);
+        /**
+         * HTTP Header 설정 : Authorization
+         * 
+         * @param authValue
+         * @return
+         */
+        S authorization(String authValue);
 
-		/**
-		 * HTTP Header 추가 : Content-Type
-		 * 
-		 * @param contentType
-		 * @return
-		 */
-        default S contentType(final MediaType contentType) {
-            return contentType(Objects.requireNonNull(contentType, () -> "contentType must not be null.").toString());
-		}
+        /**
+         * HTTP Header 설정 : Basic Authorization
+         * 
+         * @param username
+         * @param password
+         * @return
+         */
+        S basicAuth(String username, String password);
+
+        /**
+         * HTTP Header 설정 : Bearer Token
+         * 
+         * @param token
+         * @return
+         */
+        S bearerToken(String token);
 	}
 
 	/**

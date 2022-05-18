@@ -35,6 +35,8 @@ public class RestRequestTest {
 		MediaType contentType = MediaType.APPLICATION_JSON;
 		String customHeaderName = "X-Test-Header";
 		String customHeaderValue = "XTestHeaderValue";
+        String basicUsername = "username";
+        String basicPassword = "password";
 		String paramKey = "paramKey";
 		String paramValue = "paramValue";
 		
@@ -42,6 +44,7 @@ public class RestRequestTest {
 		expectedHeader.add(customHeaderName, customHeaderValue);
 		expectedHeader.add(HttpHeaders.ACCEPT, accept.toString());
 		expectedHeader.add(HttpHeaders.CONTENT_TYPE, contentType.toString());
+        expectedHeader.setBasicAuth(basicUsername, basicPassword);
 		
 		URI expectedUri = UriComponentsBuilder.fromUriString(uri)
 				.queryParam(paramKey, paramValue)
@@ -54,6 +57,7 @@ public class RestRequestTest {
 				.addHeader(customHeaderName, customHeaderValue)
 				.accept(accept)
 				.contentType(contentType)
+                .basicAuth(basicUsername, basicPassword)
 				.addParameter(paramKey, paramValue)
 				.build();
 
@@ -78,6 +82,7 @@ public class RestRequestTest {
 		String contentType = MediaType.APPLICATION_XML_VALUE;
 		String customHeaderName = "X-Test-Header";
 		String customHeaderValue = "XTestHeaderValue";
+        String bearerToken = "bearerToken";
 		String paramKey = "paramKey";
 		String paramValue = "paramValue";
 		TestBody body = TestBody.builder()
@@ -89,6 +94,7 @@ public class RestRequestTest {
 		expectedHeader.add(customHeaderName, customHeaderValue);
 		expectedHeader.add(HttpHeaders.ACCEPT, accept);
 		expectedHeader.add(HttpHeaders.CONTENT_TYPE, contentType);
+        expectedHeader.setBearerAuth(bearerToken);
 		
 		URI expectedUri = UriComponentsBuilder.fromUriString(uri)
 				.queryParam(paramKey, paramValue)
@@ -101,6 +107,7 @@ public class RestRequestTest {
 				.addHeader(customHeaderName, customHeaderValue)
 				.accept(accept)
 				.contentType(contentType)
+                .bearerToken(bearerToken)
 				.addParameter(paramKey, paramValue)
 				.body(body)
 				.build();

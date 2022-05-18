@@ -1,10 +1,15 @@
 package io.github.libedi.restrequest;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.lang.Nullable;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 
 import io.github.libedi.restrequest.RestRequestSpec.RestRequestHeaderSpec;
 import lombok.AccessLevel;
@@ -18,7 +23,7 @@ import lombok.Getter;
  * @param <T>
  * @param <S>
  */
-@Getter(AccessLevel.PACKAGE)
+@Getter(AccessLevel.PROTECTED)
 public abstract class AbstractRestRequestHeaderSpec<T, S extends RestRequestHeaderSpec<T, S>>
 		implements RestRequestHeaderSpec<T, S> {
 
@@ -37,6 +42,10 @@ public abstract class AbstractRestRequestHeaderSpec<T, S extends RestRequestHead
 		this.headers = new HttpHeaders();
 	}
 
+    protected HttpHeaders getHeaders() {
+        return HttpHeaders.readOnlyHttpHeaders(headers);
+    }
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public S addHeader(final String headerName, final String headerValue) {
@@ -47,24 +56,45 @@ public abstract class AbstractRestRequestHeaderSpec<T, S extends RestRequestHead
 	@SuppressWarnings("unchecked")
 	@Override
 	public S addHeaders(final String headerName, final String... headerValues) {
-		for (final String headerValue : headerValues) {
-			headers.add(headerName, headerValue);
-		}
+        if (!ObjectUtils.isEmpty(headerValues)) {
+            headers.addAll(headerName, (List<String>) CollectionUtils.arrayToList(headerValues));
+        }
 		return (S) this;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public S accept(final String acceptableMediaType) {
-		headers.add(HttpHeaders.ACCEPT, acceptableMediaType);
+    public S accept(final List<MediaType> acceptableMediaTypes) {
+        headers.setAccept(acceptableMediaTypes);
 		return (S) this;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public S contentType(final String contentType) {
-		headers.add(HttpHeaders.CONTENT_TYPE, contentType);
+    public S contentType(final @Nullable MediaType contentType) {
+        headers.setContentType(contentType);
 		return (S) this;
 	}
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public S authorization(final String authValue) {
+        headers.set(HttpHeaders.AUTHORIZATION, authValue);
+        return (S) this;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public S basicAuth(final String username, final String password) {
+        headers.setBasicAuth(username, password);
+        return (S) this;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public S bearerToken(final String token) {
+        headers.setBearerAuth(token);
+        return (S) this;
+    }
 
 }
