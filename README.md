@@ -21,7 +21,7 @@ As above, you can easily and readably generate all the information you need for 
 ***rest-request*** provides `RestRequest` object that creates request information, and generated in the following order:
 
 ### **1. Response Type**
-There are three types of responses:
+There are four types of responses:
 - 1. Preference : `Map<String, Object>`
 - 2. T type : `Class<T>`
 - 3. Generic T type : `ParameterizedTypeReference<T>`

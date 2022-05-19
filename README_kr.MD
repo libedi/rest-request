@@ -21,7 +21,7 @@ ResponsType response = restTemplate.exchange(request.getUri(),
 ***rest-request***는 요청 정보를 생성하는 `RestRequest` 객체를 제공하며, 다음과 같은 순서에 의해 생성합니다.
 
 ### **1. 응답 타입**
-응답 타입은 3가지 방식으로 설정할 수 있습니다.
+응답 타입은 4가지 방식으로 설정할 수 있습니다.
 - 1. 기본 설정 : `Map<String, Object>`
 - 2. T타입 설정 : `Class<T>`
 - 3. T타입 제네릭 설정 : `ParameterizedTypeReference<T>`
