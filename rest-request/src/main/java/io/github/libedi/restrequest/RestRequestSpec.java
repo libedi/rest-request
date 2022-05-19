@@ -1,13 +1,17 @@
 package io.github.libedi.restrequest;
 
 import java.net.URI;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 import org.springframework.http.MediaType;
-import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -200,7 +204,7 @@ public interface RestRequestSpec<T> {
          * @param contentType
          * @return
          */
-        S contentType(@Nullable MediaType contentType);
+        S contentType(MediaType contentType);
 
 		/**
          * HTTP Header 설정 : Content-Type
@@ -227,7 +231,21 @@ public interface RestRequestSpec<T> {
          * @param password
          * @return
          */
-        S basicAuth(String username, String password);
+        default S basicAuth(final String username, final String password) {
+            Assert.notNull(username, "Username must not be null");
+            Assert.doesNotContain(username, ":", "Username must not contain a colon");
+            Assert.notNull(password, "Password must not be null");
+
+            final Charset charset = StandardCharsets.ISO_8859_1;
+            final CharsetEncoder encoder = charset.newEncoder();
+            if (!encoder.canEncode(username) || !encoder.canEncode(password)) {
+                throw new IllegalArgumentException(
+                        "Username or password contains characters that cannot be encoded to " + charset.displayName());
+            }
+            final String credentialsString = username + ":" + password;
+            final byte[] encodedBytes = Base64.getEncoder().encode(credentialsString.getBytes(charset));
+            return authorization("Basic " + new String(encodedBytes, charset));
+        }
 
         /**
          * HTTP Header 설정 : Bearer Token
@@ -235,7 +253,9 @@ public interface RestRequestSpec<T> {
          * @param token
          * @return
          */
-        S bearerToken(String token);
+        default S bearerToken(final String token) {
+            return authorization("Bearer " + token);
+        }
 	}
 
 	/**

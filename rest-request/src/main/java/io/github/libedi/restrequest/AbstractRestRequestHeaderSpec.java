@@ -7,9 +7,6 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.lang.Nullable;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.ObjectUtils;
 
 import io.github.libedi.restrequest.RestRequestSpec.RestRequestHeaderSpec;
 import lombok.AccessLevel;
@@ -56,8 +53,8 @@ public abstract class AbstractRestRequestHeaderSpec<T, S extends RestRequestHead
 	@SuppressWarnings("unchecked")
 	@Override
 	public S addHeaders(final String headerName, final String... headerValues) {
-        if (!ObjectUtils.isEmpty(headerValues)) {
-            headers.addAll(headerName, (List<String>) CollectionUtils.arrayToList(headerValues));
+        for (final String headerValue : headerValues) {
+            headers.add(headerName, headerValue);
         }
 		return (S) this;
 	}
@@ -71,7 +68,7 @@ public abstract class AbstractRestRequestHeaderSpec<T, S extends RestRequestHead
 
 	@SuppressWarnings("unchecked")
 	@Override
-    public S contentType(final @Nullable MediaType contentType) {
+    public S contentType(final MediaType contentType) {
         headers.setContentType(contentType);
 		return (S) this;
 	}
@@ -80,20 +77,6 @@ public abstract class AbstractRestRequestHeaderSpec<T, S extends RestRequestHead
     @Override
     public S authorization(final String authValue) {
         headers.set(HttpHeaders.AUTHORIZATION, authValue);
-        return (S) this;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public S basicAuth(final String username, final String password) {
-        headers.setBasicAuth(username, password);
-        return (S) this;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public S bearerToken(final String token) {
-        headers.setBearerAuth(token);
         return (S) this;
     }
 

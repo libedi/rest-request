@@ -3,7 +3,10 @@ package io.github.libedi.restrequest.test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.net.URI;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 
 import org.junit.Test;
@@ -40,11 +43,13 @@ public class RestRequestTest {
 		String paramKey = "paramKey";
 		String paramValue = "paramValue";
 		
+		Charset charset = StandardCharsets.ISO_8859_1;
 		HttpHeaders expectedHeader = new HttpHeaders();
 		expectedHeader.add(customHeaderName, customHeaderValue);
 		expectedHeader.add(HttpHeaders.ACCEPT, accept.toString());
 		expectedHeader.add(HttpHeaders.CONTENT_TYPE, contentType.toString());
-        expectedHeader.setBasicAuth(basicUsername, basicPassword);
+        expectedHeader.set(HttpHeaders.AUTHORIZATION, "Basic " + new String(
+                Base64.getEncoder().encode((basicUsername + ":" + basicPassword).getBytes(charset)), charset));
 		
 		URI expectedUri = UriComponentsBuilder.fromUriString(uri)
 				.queryParam(paramKey, paramValue)
@@ -94,7 +99,7 @@ public class RestRequestTest {
 		expectedHeader.add(customHeaderName, customHeaderValue);
 		expectedHeader.add(HttpHeaders.ACCEPT, accept);
 		expectedHeader.add(HttpHeaders.CONTENT_TYPE, contentType);
-        expectedHeader.setBearerAuth(bearerToken);
+        expectedHeader.set(HttpHeaders.AUTHORIZATION, "Bearer " + bearerToken);
 		
 		URI expectedUri = UriComponentsBuilder.fromUriString(uri)
 				.queryParam(paramKey, paramValue)

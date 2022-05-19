@@ -185,7 +185,7 @@ public class WebService {
 
 ## **Requirements**
 - Java 8 or higher
-- Spring Web 3.2 or higher
+- Spring Web 4.3 or higher
 
 ## **Install**
 - ### **Maven**
@@ -193,10 +193,10 @@ public class WebService {
 <dependency>
     <groupId>io.github.libedi</groupId>
     <artifactId>rest-request</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
 </dependency>
 ~~~
 - ### **Gradle**
 ~~~groovy
-implementation 'io.github.libedi:rest-request:1.1.0'
+implementation 'io.github.libedi:rest-request:1.1.1'
 ~~~
