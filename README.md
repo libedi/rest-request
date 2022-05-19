@@ -21,7 +21,7 @@ As above, you can easily and readably generate all the information you need for 
 ***rest-request*** provides `RestRequest` object that creates request information, and generated in the following order:
 
 ### **1. Response Type**
-There are three types of responses:
+There are four types of responses:
 - 1. Preference : `Map<String, Object>`
 - 2. T type : `Class<T>`
 - 3. Generic T type : `ParameterizedTypeReference<T>`
@@ -185,7 +185,7 @@ public class WebService {
 
 ## **Requirements**
 - Java 8 or higher
-- Spring Web 3.2 or higher
+- Spring Web 4.3 or higher
 
 ## **Install**
 - ### **Maven**
@@ -193,10 +193,10 @@ public class WebService {
 <dependency>
     <groupId>io.github.libedi</groupId>
     <artifactId>rest-request</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
 </dependency>
 ~~~
 - ### **Gradle**
 ~~~groovy
-implementation 'io.github.libedi:rest-request:1.1.0'
+implementation 'io.github.libedi:rest-request:1.1.1'
 ~~~
