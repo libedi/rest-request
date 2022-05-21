@@ -236,7 +236,7 @@ public interface RestRequestSpec<T> {
             Assert.doesNotContain(username, ":", "Username must not contain a colon");
             Assert.notNull(password, "Password must not be null");
 
-            final Charset charset = StandardCharsets.ISO_8859_1;
+            final Charset charset = StandardCharsets.UTF_8;
             final CharsetEncoder encoder = charset.newEncoder();
             if (!encoder.canEncode(username) || !encoder.canEncode(password)) {
                 throw new IllegalArgumentException(
