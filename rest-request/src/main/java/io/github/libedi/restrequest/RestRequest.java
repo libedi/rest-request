@@ -42,8 +42,8 @@ public class RestRequest<T> implements Serializable {
 	 * 
 	 * @return
 	 */
-	public static DefaultRestRequestUriSpec<Map<String, Object>> mapResponse() {
-		return response(new ParameterizedTypeReference<Map<String, Object>>() {});
+	public static DefaultRestRequestUriSpec<Map<String, Object>> mapResp() {
+		return resp(new ParameterizedTypeReference<Map<String, Object>>() {});
 	}
 
 	/**
@@ -53,7 +53,7 @@ public class RestRequest<T> implements Serializable {
 	 * @param responseType
 	 * @return
 	 */
-	public static <T> DefaultRestRequestUriSpec<T> response(final Class<T> responseType) {
+    public static <T> DefaultRestRequestUriSpec<T> resp(final Class<T> responseType) {
 		return new DefaultRestRequestUriSpec<>(responseType);
 	}
 
@@ -64,7 +64,7 @@ public class RestRequest<T> implements Serializable {
 	 * @param typeReference
 	 * @return
 	 */
-	public static <T> DefaultRestRequestUriSpec<T> response(final ParameterizedTypeReference<T> typeReference) {
+    public static <T> DefaultRestRequestUriSpec<T> resp(final ParameterizedTypeReference<T> typeReference) {
 		return new DefaultRestRequestUriSpec<>(typeReference);
 	}
 	
@@ -73,7 +73,7 @@ public class RestRequest<T> implements Serializable {
 	 * 
 	 * @return
 	 */
-	public static DefaultRestRequestUriSpec<Void> nonResponse() {
+    public static DefaultRestRequestUriSpec<Void> nonResp() {
 		return new DefaultRestRequestUriSpec<>(Void.class);
 	}
 

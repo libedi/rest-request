@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.github.libedi</groupId>
   <artifactId>rest-request</artifactId>
-  <version>1.1.2</version>
+  <version>2.0.0</version>
   <name>rest-request</name>
   <description>HTTP Request Generator for RestTemplate</description>
   <url>https://github.com/libedi/rest-request</url>

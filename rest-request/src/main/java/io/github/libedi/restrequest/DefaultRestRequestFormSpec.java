@@ -45,7 +45,9 @@ public class DefaultRestRequestFormSpec<T, S extends RestRequestFormSpec<T, S>>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public S addParameter(final String key, final Object value) {
+    public S addParam(final String key, final Object value) {
+        Objects.requireNonNull(key, () -> "Key must not be null.");
+
 		if (parameter == null) {
 			parameter = new LinkedMultiValueMap<>();
 		}
@@ -53,9 +55,18 @@ public class DefaultRestRequestFormSpec<T, S extends RestRequestFormSpec<T, S>>
 		return (S) this;
 	}
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public S addParam(final String key, final Object... values) {
+        for (final Object value : values) {
+            addParam(key, value);
+        }
+        return (S) this;
+    }
+
 	@SuppressWarnings("unchecked")
 	@Override
-	public S putAllParameters(final MultiValueMap<String, Object> multiValueMap) {
+    public S setParams(final MultiValueMap<String, Object> multiValueMap) {
 		Objects.requireNonNull(multiValueMap, () -> "Parameter must not be null.");
 
 		if (parameter == null) {
@@ -68,18 +79,18 @@ public class DefaultRestRequestFormSpec<T, S extends RestRequestFormSpec<T, S>>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public S putAllParameters(final Map<String, Object> map) {
+    public S setParams(final Map<String, Object> map) {
 		Objects.requireNonNull(map, () -> "Parameter must not be null.");
 
 		for (final Entry<String, Object> entry : map.entrySet()) {
-			addParameter(entry.getKey(), entry.getValue());
+            addParam(entry.getKey(), entry.getValue());
 		}
 		return (S) this;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public S putAllParameters(final Object object) {
+    public S setParams(final Object object) {
 		Objects.requireNonNull(object, () -> "Parameter must not be null.");
 		Assert.isTrue((object instanceof Collection) == false, "Parameter must not be Collection.");
 
@@ -96,11 +107,11 @@ public class DefaultRestRequestFormSpec<T, S extends RestRequestFormSpec<T, S>>
         final Object value = field.get(object);
 
         if (value instanceof Collection) {
-            ((Collection<?>) value).forEach(el -> addParameter(name, el));
+            ((Collection<?>) value).forEach(el -> addParam(name, el));
         } else if (value != null && value.getClass().isArray()) {
-            Arrays.stream((Object[]) value).forEach(el -> addParameter(name, el));
+            Arrays.stream((Object[]) value).forEach(el -> addParam(name, el));
         } else {
-            addParameter(name, value);
+            addParam(name, value);
         }
     }
 

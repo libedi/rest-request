@@ -3,11 +3,11 @@
 
 ***rest-request***는 Spring Webflux의 `WebClient`에서 영감을 받아, 이와 유사하게 메소드 체이닝 방식으로 HTTP Header, Query Parameter, Form Data, Request Body 등을 생성할 수 있습니다.
 ~~~java
-RestRequest<ResponseType> request = RestRequest.response(ResponseType.class)
+RestRequest<ResponseType> request = RestRequest.resp(ResponseType.class)
                                                .uri("http://www.api.com/resources")
                                                .post()
                                                .addHeader("X-Test-Header-Name", "XTestHeaderValue")
-                                               .addParameter("queryParamKey", "queryParamValue")
+                                               .addParam("queryParamKey", "queryParamValue")
                                                .body(requestBodyObject)
                                                .build();
 ResponsType response = restTemplate.exchange(request.getUri(),
@@ -28,16 +28,16 @@ ResponsType response = restTemplate.exchange(request.getUri(),
 - 4. Void타입 : `Class<Void>`
 ~~~java
 // 1. 기본설정 : Map<String, Object>
-RestRequest.mapResponse()
+RestRequest.mapResp()
 
 // 2. T타입 설정 : Class<T>
-RestRequest.response(ResponseType.class)
+RestRequest.resp(ResponseType.class)
 
 // 3. T타입 제네릭 설정 : ParameterizedTypeReference<T>
-RestRequest.response(new ParameterizedTypeReference<List<ResponseType>>(){})
+RestRequest.resp(new ParameterizedTypeReference<List<ResponseType>>(){})
 
 // 4. Void타입 설정 : Class<Void>
-RestRequest.nonResponse()
+RestRequest.nonResp()
 ~~~
 
 ### **2. 요청 URI**
@@ -45,18 +45,18 @@ RestRequest.nonResponse()
 ~~~java
 // java.net.URI 타입
 URI uri = URI.create("http://www.api.com/resources");
-RestRequest.response(ResponseType.class)
+RestRequest.resp(ResponseType.class)
            .uri(uri)
 
 // java.lang.String 타입
-RestRequest.response(ResponseType.class)
+RestRequest.resp(ResponseType.class)
            .uri("http://www.api.com/resources")
 ~~~
 
 ### **3. HTTP Method**
 HTTP Method는 직관적인 이름의 메소드명으로 지정할 수 있습니다. 지원하는 메소드는 GET / POST / PUT / PATCH / DELETE 입니다. 여기서 POST / PUT / PATCH 방식은 이후에 Request Body를 설정가능하게 합니다.
 ~~~java
-RestRequest.response(ResponseType.class)
+RestRequest.resp(ResponseType.class)
            .uri(uri)
            .get() / .post() / .put() / .patch() / .delete()
 ~~~
@@ -67,7 +67,7 @@ RestRequest.response(ResponseType.class)
 - **HTTP Header**  
 HTTP Header는 **`addHeader()`, `accept()`, `contentType()`, `authorization()`, `basicAuth()`, `bearerToken()`** 메소드로 추가할 수 있습니다.
 ~~~java
-RestRequest.response(ResponseType.class)
+RestRequest.resp(ResponseType.class)
            .uri(uri)
            .get()
            .addHeader("headerName", "headerValue")
@@ -78,31 +78,31 @@ RestRequest.response(ResponseType.class)
            .bearerToken("tokenValue")
 ~~~
 - **Form Parameter**  
-**`addParameter()`, `putAllParameters()`** 메소드로 Form Parameter를 추가할 수 있습니다.  
+**`addParam()`, `setParams()`** 메소드로 Form Parameter를 추가할 수 있습니다.  
 이전에 `get()` / `delete()`를 지정했다면, Query Parameter가 생성되고, `post()` / `put()` / `patch()`를 지정했다면, Form Data가 생성됩니다.  
 만약, `post()` / `put()` / `patch()`를 지정했더라도, Request Body와 Form Parameter 둘 다 설정되었다면, Query Parameter로 생성됩니다.
 ~~~java
 // Query Parameter 생성
-RestRequest.response(ResponseType.class)
+RestRequest.resp(ResponseType.class)
            .uri(uri)
            .get()
-           .addParameter("paramKey", "paramValue")  // Query Parameter 추가 : key-value 방식
-           .putAllParameters(multiValueMap)         // Query Parameter 추가 : MultiValueMap<String, Object>
-           .putAllParameters(map)                   // Query Parameter 추가 : Map<String, Object>
-           .putAllParameters(object)                // Query Parameter 추가 : Object
+           .addParam("paramKey", "paramValue")  // Query Parameter 추가 : key-value 방식
+           .setParams(multiValueMap)            // Query Parameter 추가 : MultiValueMap<String, Object>
+           .setParams(map)                      // Query Parameter 추가 : Map<String, Object>
+           .setParams(object)                   // Query Parameter 추가 : Object
 
 // Form Data 생성
-RestRequest.response(ResponseType.class)
+RestRequest.resp(ResponseType.class)
            .uri(uri)
            .post()
-           .addParameter("paramKey", "paramValue")
+           .addParam("paramKey", "paramValue")
 ~~~
 - **Request Body**  
 **`body()`** 메소드로 설정할 수 있습니다. (`post()` / `put()` / `patch()` 지정시에만 `body()` 메소드를 호출할 수 있습니다.)
 ~~~java
-RestRequest.response(ResponseType.class)
+RestRequest.resp(ResponseType.class)
            .put()
-           .addParameter("queryParamKey", "queryParamValue")  // Query Parameter로 생성
+           .addParam("queryParamKey", "queryParamValue")  // Query Parameter로 생성
            .body(requestBodyObject)
 ~~~
 
@@ -116,7 +116,7 @@ RestRequest.response(ResponseType.class)
 - `ParameterizedTypeReference<T>`
 ~~~java
 // Class<T> 지정시
-RestRequest<ResponseType> request = RestRequest.response(ResponseType.class)
+RestRequest<ResponseType> request = RestRequest.resp(ResponseType.class)
                                                .uri(uri)
                                                .get()
                                                .build();
@@ -126,7 +126,7 @@ ResponseType response = restTemplate.exchange(request.getUri(),
                                               request.getResponseType());
 
 // ParameterizedTypeReference<T> 지정시
-RestRequest<List<ResponseType>> request = RestRequest.response(new ParameterizedTypeReference<List<ResponseType>>(){})
+RestRequest<List<ResponseType>> request = RestRequest.resp(new ParameterizedTypeReference<List<ResponseType>>(){})
                                                      .uri(uri)
                                                      .get()
                                                      .build();
@@ -166,19 +166,36 @@ public class WebService {
     private RestClientAdpater restClient;
     
     public ResponseEntity<Resource> getSome(ResourceDto dto) {
-        return restClient.execute(RestRequest.response(Resource.class)
-                                             .uri("http://www.api.com/resources")
-                                             .get()
-                                             .putAllParameters(dto)
-                                             .build());
+        return restClient.send(RestRequest.resp(Resource.class)
+                                          .uri("http://www.api.com/resources")
+                                          .get()
+                                          .setParams(dto)
+                                          .build());
     }
     
     public Optional<Resource> postSome(Resource resource) {
-        return restClient.executeForObject(RestRequest.response(Resource.class)
-                                                      .uri("http://www.api.com/resources")
-                                                      .post()
-                                                      .body(resource)
-                                                      .build());
+        return restClient.sendForBody(RestRequest.resp(Resource.class)
+                                                 .uri("http://www.api.com/resources")
+                                                 .post()
+                                                 .body(resource)
+                                                 .build());
+    }
+
+    public CompletableFuture<ResponseEntity<Resource>> getSomeAsync(ResourceDto dto) {
+        return restClient.sendAsync(RestRequest.resp(Resource.class)
+                                               .uri("http://www.api.com/resources")
+                                               .get()
+                                               .setParams(dto)
+                                               .build());
+    }
+
+    public Compublic CompletableFuture<ResponseEntity<Resource>> getSomeAsync(ResourceDto dto, Executor executor) {
+        return restClient.sendAsync(RestRequest.resp(Resource.class)
+                                               .uri("http://www.api.com/resources")
+                                               .get()
+                                               .setParams(dto)
+                                               .build(),
+                                    executor);
     }
 }
 ~~~
@@ -193,10 +210,10 @@ public class WebService {
 <dependency>
     <groupId>io.github.libedi</groupId>
     <artifactId>rest-request</artifactId>
-    <version>1.1.2</version>
+    <version>2.0.0</version>
 </dependency>
 ~~~
 - ### **Gradle**
 ~~~groovy
-implementation 'io.github.libedi:rest-request:1.1.2'
+implementation 'io.github.libedi:rest-request:2.0.0'
 ~~~

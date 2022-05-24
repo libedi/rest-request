@@ -35,16 +35,16 @@ public class DefaultRestClientAdapter implements RestClientAdapter {
 
 
 	@Override
-	public <T> ResponseEntity<T> execute(final RestRequest<T> request) {
-        if (request == null) {
+    public <T> ResponseEntity<T> send(final RestRequest<T> restRequest) {
+        if (restRequest == null) {
             throw new IllegalArgumentException("RestRequest must not be null.");
         }
-		if (request.getTypeReference() == null) {
-			return restTemplate.exchange(request.getUri(), request.getMethod(), request.getHttpEntity(),
-					request.getResponseType());
+        if (restRequest.getTypeReference() == null) {
+            return restTemplate.exchange(restRequest.getUri(), restRequest.getMethod(), restRequest.getHttpEntity(),
+                    restRequest.getResponseType());
 		}
-		return restTemplate.exchange(request.getUri(), request.getMethod(), request.getHttpEntity(),
-				request.getTypeReference());
+        return restTemplate.exchange(restRequest.getUri(), restRequest.getMethod(), restRequest.getHttpEntity(),
+                restRequest.getTypeReference());
 	}
 
 }
