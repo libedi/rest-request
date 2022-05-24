@@ -56,14 +56,14 @@ public class RestRequestTest {
 				.build().toUri();
 
 		// when
-		RestRequest<String> actual = RestRequest.response(responseType)
+        RestRequest<String> actual = RestRequest.resp(responseType)
 				.uri(uri)
 				.get()
 				.addHeader(customHeaderName, customHeaderValue)
 				.accept(accept)
 				.contentType(contentType)
                 .basicAuth(basicUsername, basicPassword)
-				.addParameter(paramKey, paramValue)
+                .addParam(paramKey, paramValue)
 				.build();
 
 		// then
@@ -106,14 +106,14 @@ public class RestRequestTest {
 				.build().toUri();
 
 		// when
-		RestRequest<List<String>> actual = RestRequest.response(typeReference)
+        RestRequest<List<String>> actual = RestRequest.resp(typeReference)
 				.uri(uri)
 				.post()
 				.addHeader(customHeaderName, customHeaderValue)
 				.accept(accept)
 				.contentType(contentType)
                 .bearerToken(bearerToken)
-				.addParameter(paramKey, paramValue)
+                .addParam(paramKey, paramValue)
 				.body(body)
 				.build();
 		

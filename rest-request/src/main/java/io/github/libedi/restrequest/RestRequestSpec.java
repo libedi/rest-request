@@ -276,35 +276,45 @@ public interface RestRequestSpec<T> {
 		 * @return
 		 * @throws NullPointerException key가 null인 경우
 		 */
-		S addParameter(String key, Object value);
+        S addParam(String key, Object value);
+
+        /**
+         * 파라미터 추가
+         * 
+         * @param key    파라미터 key
+         * @param values 파라미터 values
+         * @return
+         * @throws NullPointerException key가 null인 경우
+         */
+        S addParam(final String key, final Object... values);
 
 		/**
-		 * 파라미터 일괄 추가
-		 * 
-		 * @param multiValueMap
-		 * @return
-		 * @throws NullPointerException multiValueMap 파라미터가 null인 경우
-		 */
-		S putAllParameters(MultiValueMap<String, Object> multiValueMap);
+         * 파라미터 일괄 설정
+         * 
+         * @param multiValueMap
+         * @return
+         * @throws NullPointerException multiValueMap 파라미터가 null인 경우
+         */
+        S setParams(MultiValueMap<String, Object> multiValueMap);
 
 		/**
-		 * 파라미터 일괄 추가
-		 * 
-		 * @param map
-		 * @return
-		 * @throws NullPointerException map 파라미터가 null인 경우
-		 */
-		S putAllParameters(Map<String, Object> map);
+         * 파라미터 일괄 설정
+         * 
+         * @param map
+         * @return
+         * @throws NullPointerException map 파라미터가 null인 경우
+         */
+        S setParams(Map<String, Object> map);
 
 		/**
-		 * 파라미터 일괄 추가
-		 * 
-		 * @param object
-		 * @return
-		 * @throws NullPointerException     object 파라미터가 null인 경우
-		 * @throws IllegalArgumentException object 파라미터가 Collection인 경우
-		 */
-		S putAllParameters(Object object);
+         * 파라미터 일괄 설정
+         * 
+         * @param object
+         * @return
+         * @throws NullPointerException     object 파라미터가 null인 경우
+         * @throws IllegalArgumentException object 파라미터가 Collection인 경우
+         */
+        S setParams(Object object);
 	}
 
 	/**
