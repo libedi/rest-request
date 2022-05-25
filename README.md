@@ -189,7 +189,7 @@ public class WebService {
                                                .build());
     }
 
-    public Compublic CompletableFuture<ResponseEntity<Resource>> getSomeAsync(ResourceDto dto, Executor executor) {
+    public CompletableFuture<ResponseEntity<Resource>> getSomeAsync(ResourceDto dto, Executor executor) {
         return restClient.sendAsync(RestRequest.resp(Resource.class)
                                                .uri("http://www.api.com/resources")
                                                .get()
