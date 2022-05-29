@@ -1,9 +1,11 @@
 package io.github.libedi.restrequest;
 
+import java.io.File;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
@@ -14,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.util.Assert;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
@@ -333,6 +336,33 @@ public interface RestRequestSpec<T> {
 		 * @return
 		 */
 		RestRequestBodySpec<T> body(Object body);
+
+        /**
+         * 파일 첨부
+         * 
+         * @param key  파라미터 key
+         * @param file 첨부파일
+         * @return
+         */
+        RestRequestBodySpec<T> addFile(String key, File file);
+
+        /**
+         * 파일 첨부
+         * 
+         * @param key  파라미터 key
+         * @param path 첨부파일 경로
+         * @return
+         */
+        RestRequestBodySpec<T> addFile(String key, Path path);
+
+        /**
+         * 파일 첨부
+         * 
+         * @param key           파라미터 key
+         * @param multipartFile MultipartFile
+         * @return
+         */
+        RestRequestBodySpec<T> addFile(String key, MultipartFile multipartFile);
 	}
 
 }

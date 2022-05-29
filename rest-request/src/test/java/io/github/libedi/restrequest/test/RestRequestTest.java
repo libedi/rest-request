@@ -2,18 +2,26 @@ package io.github.libedi.restrequest.test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 
 import org.junit.Test;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import io.github.libedi.restrequest.RestRequest;
@@ -127,5 +135,44 @@ public class RestRequestTest {
 		});
 		assertThat(actual.getResponseType()).isNull();
 		assertThat(actual.getTypeReference()).isEqualTo(typeReference);
+	}
+	
+	@Test
+	public void multipartData() throws Exception {
+	    // given
+	    Path attachPath = Paths.get("src", "test", "resources", "file", "test.txt");
+	    File attachFile = attachPath.toFile();
+	    MockMultipartFile multipartFile = new MockMultipartFile("file3", "test.txt", MediaType.TEXT_PLAIN_VALUE, new FileInputStream(attachFile));
+	    
+	    // when
+	    RestRequest<String> request = RestRequest.resp(String.class)
+	            .uri("http://www.test.com")
+                .post()
+                .addFile("file1", attachFile)
+                .addFile("file2", attachPath)
+                .addFile("file3", multipartFile)
+                .build();
+	    
+	    // then
+	    assertThat(request.getHttpEntity()).satisfies(http -> {
+            assertThat(http.getHeaders().getContentType()).isEqualTo(MediaType.MULTIPART_FORM_DATA);
+	        assertThat(http.getBody()).isInstanceOf(MultiValueMap.class);
+            @SuppressWarnings("unchecked")
+            MultiValueMap<String, Object> form = (MultiValueMap<String, Object>) http.getBody();
+            assertThat(form.get("file1")).first().isInstanceOf(FileSystemResource.class);
+            assertThat(form.get("file1")).first().usingRecursiveComparison()
+                    .isEqualTo(new FileSystemResource(attachFile));
+            assertThat(form.get("file2")).first().isInstanceOf(FileSystemResource.class);
+            assertThat(form.get("file2")).first().usingRecursiveComparison()
+                    .isEqualTo(new FileSystemResource(attachPath.toFile()));
+            assertThat(form.get("file3")).first().isInstanceOf(ByteArrayResource.class);
+            assertThat(form.get("file3")).first().usingRecursiveComparison()
+                    .isEqualTo(new ByteArrayResource(multipartFile.getBytes()) {
+                        @Override
+                        public String getFilename() {
+                            return multipartFile.getOriginalFilename();
+                        }
+                    });
+	    });
 	}
 }
