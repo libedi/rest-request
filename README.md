@@ -105,6 +105,15 @@ RestRequest.resp(ResponseType.class)
            .addParam("queryParamKey", "queryParamValue")  // Generate Query Parameter
            .body(requestBodyObject)
 ~~~
+- **Attach File**  
+You can set it as a **`addFile()`** method. The supported parameter types are `File`, `Path`, and `MultipartFile`. If the Content Type header is not set, it is automatically set to the value `multipart/form-data`. If Request Body is set and Spring version is 5.2 or higher, it is set to `multipart/mixed`. However, since Request Body is set as a key called `body` in the form data, it is recommended to set it directly using `addParam()` if possible. (You can call the `addFile()` method only when specifying `post()` / `put()` / `patch()` methods.)
+~~~java
+RestRequest.resp(ResponseType.class)
+           .post()
+           .addFile("file1", new File("test.txt"))
+           .addFile("file2", Paths.get("test.txt"))
+           .addFile("file3", multipartFile)
+~~~
 
 ### **5. build()**
 Finally, call **`build()`** method to generate `RestRequest`.  
@@ -210,10 +219,10 @@ public class WebService {
 <dependency>
     <groupId>io.github.libedi</groupId>
     <artifactId>rest-request</artifactId>
-    <version>2.0.0</version>
+    <version>2.1.0</version>
 </dependency>
 ~~~
 - ### **Gradle**
 ~~~groovy
-implementation 'io.github.libedi:rest-request:2.0.0'
+implementation 'io.github.libedi:rest-request:2.1.0'
 ~~~
