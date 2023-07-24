@@ -28,116 +28,116 @@ import org.springframework.web.util.UriComponentsBuilder;
  */
 public interface RestRequestSpec<T> {
 
-	/**
-	 * RestRequest 생성
-	 * 
-	 * @return
-	 */
-	RestRequest<T> build();
+    /**
+     * RestRequest 생성
+     * 
+     * @return
+     */
+    RestRequest<T> build();
 
-	/**
-	 * REST 요청 명세 : URI
-	 * 
-	 * @author "Sangjun,Park"
-	 *
-	 * @param <T> 응답 타입
-	 */
-	interface RestRequestUriSpec<T> {
+    /**
+     * REST 요청 명세 : URI
+     * 
+     * @author "Sangjun,Park"
+     *
+     * @param <T> 응답 타입
+     */
+    interface RestRequestUriSpec<T> {
 
-		/**
-		 * 요청 URI 설정
-		 * 
-		 * @param uri
-		 * @return
-		 */
-		RestRequestMethodSpec<T> uri(URI uri);
+        /**
+         * 요청 URI 설정
+         * 
+         * @param uri
+         * @return
+         */
+        RestRequestMethodSpec<T> uri(URI uri);
 
-		/**
-		 * 요청 URI 설정
-		 * 
-		 * @param uri
-		 * @return
-		 */
-		default RestRequestMethodSpec<T> uri(final String uri) {
-			return uri(URI.create(Objects.requireNonNull(uri, () -> "URI must not be null.")));
-		}
+        /**
+         * 요청 URI 설정
+         * 
+         * @param uri
+         * @return
+         */
+        default RestRequestMethodSpec<T> uri(final String uri) {
+            return uri(URI.create(Objects.requireNonNull(uri, () -> "URI must not be null.")));
+        }
 
-		/**
-		 * 요청 URI 설정
-		 * 
-		 * @param uri
-		 * @param uriVariables
-		 * @return
-		 */
-		default RestRequestMethodSpec<T> uri(final String uri, final Object... uriVariables) {
-			return uri(UriComponentsBuilder.fromUriString(Objects.requireNonNull(uri, () -> "URI must not be null."))
-					.buildAndExpand(uriVariables).encode().toUri());
-		}
-	}
+        /**
+         * 요청 URI 설정
+         * 
+         * @param uri
+         * @param uriVariables
+         * @return
+         */
+        default RestRequestMethodSpec<T> uri(final String uri, final Object... uriVariables) {
+            return uri(UriComponentsBuilder.fromUriString(Objects.requireNonNull(uri, () -> "URI must not be null."))
+                    .buildAndExpand(uriVariables).encode().toUri());
+        }
+    }
 
-	/**
-	 * REST 요청 명세: HTTP Method
-	 * 
-	 * @author "Sangjun,Park"
-	 *
-	 * @param <T> 응답 타입
-	 */
-	interface RestRequestMethodSpec<T> {
+    /**
+     * REST 요청 명세: HTTP Method
+     * 
+     * @author "Sangjun,Park"
+     *
+     * @param <T> 응답 타입
+     */
+    interface RestRequestMethodSpec<T> {
 
-		/**
-		 * GET 방식으로 호출
-		 * 
-		 * @return
-		 */
-		RestRequestFormSpec<T, ?> get();
+        /**
+         * GET 방식으로 호출
+         * 
+         * @return
+         */
+        RestRequestFormSpec<T, ?> get();
 
-		/**
-		 * POST 방식으로 호출
-		 * 
-		 * @return
-		 */
-		RestRequestBodySpec<T> post();
+        /**
+         * POST 방식으로 호출
+         * 
+         * @return
+         */
+        RestRequestBodySpec<T> post();
 
-		/**
-		 * PUT 방식으로 호출
-		 * 
-		 * @return
-		 */
-		RestRequestBodySpec<T> put();
+        /**
+         * PUT 방식으로 호출
+         * 
+         * @return
+         */
+        RestRequestBodySpec<T> put();
 
-		/**
-		 * PATCH 방식으로 호출
-		 * 
-		 * @return
-		 */
-		RestRequestBodySpec<T> patch();
+        /**
+         * PATCH 방식으로 호출
+         * 
+         * @return
+         */
+        RestRequestBodySpec<T> patch();
 
-		/**
-		 * DELETE 방식으로 호출
-		 * 
-		 * @return
-		 */
-		RestRequestFormSpec<T, ?> delete();
-	}
+        /**
+         * DELETE 방식으로 호출
+         * 
+         * @return
+         */
+        RestRequestFormSpec<T, ?> delete();
+    }
 
-	/**
-	 * REST 요청 명세 : HTTP Header
-	 * 
-	 * @author "Sangjun,Park"
-	 *
-	 * @param <T> 응답 타입
-	 * @param <S> 메소드 반환 타입
-	 */
-	interface RestRequestHeaderSpec<T, S extends RestRequestHeaderSpec<T, S>> extends RestRequestSpec<T> {
+    /**
+     * REST 요청 명세 : HTTP Header
+     * 
+     * @author "Sangjun,Park"
+     *
+     * @param <T> 응답 타입
+     * @param <S> 메소드 반환 타입
+     */
+    interface RestRequestHeaderSpec<T, S extends RestRequestHeaderSpec<T, S>> extends RestRequestSpec<T> {
 
-		/**
-		 * HTTP Header 추가
-		 * 
-		 * @param headerName
-		 * @param headerValue
-		 * @return
-		 */
-		S addHeader(String headerName, String headerValue);
+        /**
+         * HTTP Header 추가
+         * 
+         * @param headerName
+         * @param headerValue
+         * @return
+         */
+        S addHeader(String headerName, String headerValue);
 
         /**
          * HTTP Header 추가
@@ -151,14 +151,14 @@ public interface RestRequestSpec<T> {
                     headerValue);
         }
 
-		/**
-		 * HTTP Header 추가
-		 * 
-		 * @param headerName
-		 * @param headerValues
-		 * @return
-		 */
-		S addHeaders(String headerName, String... headerValues);
+        /**
+         * HTTP Header 추가
+         * 
+         * @param headerName
+         * @param headerValues
+         * @return
+         */
+        S addHeaders(String headerName, String... headerValues);
 
         /**
          * HTTP Header 추가
@@ -191,7 +191,7 @@ public interface RestRequestSpec<T> {
                     Objects.requireNonNull(acceptableMediaType, () -> "acceptableMediaType must not be null.")));
         }
 
-		/**
+        /**
          * HTTP Header 설정 : Accept
          * 
          * @param acceptableMediaType
@@ -209,7 +209,7 @@ public interface RestRequestSpec<T> {
          */
         S contentType(MediaType contentType);
 
-		/**
+        /**
          * HTTP Header 설정 : Content-Type
          * 
          * @param contentType
@@ -217,7 +217,7 @@ public interface RestRequestSpec<T> {
          */
         default S contentType(final String contentType) {
             return contentType(StringUtils.hasText(contentType) ? MediaType.valueOf(contentType) : null);
-		}
+        }
 
         /**
          * HTTP Header 설정 : Authorization
@@ -259,26 +259,26 @@ public interface RestRequestSpec<T> {
         default S bearerToken(final String token) {
             return authorization("Bearer " + token);
         }
-	}
+    }
 
-	/**
-	 * REST 요청 명세 : Query Params / Form Data
-	 * 
-	 * @author "Sangjun,Park"
-	 *
-	 * @param <T> 응답 타입
-	 * @param <S> 메소드 반환 타입
-	 */
-	interface RestRequestFormSpec<T, S extends RestRequestFormSpec<T, S>> extends RestRequestHeaderSpec<T, S> {
+    /**
+     * REST 요청 명세 : Query Params / Form Data
+     * 
+     * @author "Sangjun,Park"
+     *
+     * @param <T> 응답 타입
+     * @param <S> 메소드 반환 타입
+     */
+    interface RestRequestFormSpec<T, S extends RestRequestFormSpec<T, S>> extends RestRequestHeaderSpec<T, S> {
 
-		/**
-		 * 파라미터 추가
-		 * 
-		 * @param key   파라미터 key
-		 * @param value 파라미터 value
-		 * @return
-		 * @throws NullPointerException key가 null인 경우
-		 */
+        /**
+         * 파라미터 추가
+         * 
+         * @param key   파라미터 key
+         * @param value 파라미터 value
+         * @return
+         * @throws NullPointerException key가 null인 경우
+         */
         S addParam(String key, Object value);
 
         /**
@@ -291,7 +291,7 @@ public interface RestRequestSpec<T> {
          */
         S addParam(final String key, final Object... values);
 
-		/**
+        /**
          * 파라미터 일괄 설정
          * 
          * @param multiValueMap
@@ -300,7 +300,7 @@ public interface RestRequestSpec<T> {
          */
         S setParams(MultiValueMap<String, Object> multiValueMap);
 
-		/**
+        /**
          * 파라미터 일괄 설정
          * 
          * @param map
@@ -309,7 +309,7 @@ public interface RestRequestSpec<T> {
          */
         S setParams(Map<String, Object> map);
 
-		/**
+        /**
          * 파라미터 일괄 설정
          * 
          * @param object
@@ -318,24 +318,24 @@ public interface RestRequestSpec<T> {
          * @throws IllegalArgumentException object 파라미터가 Collection인 경우
          */
         S setParams(Object object);
-	}
+    }
 
-	/**
-	 * REST 요청 명세 : Request Body
-	 * 
-	 * @author "Sangjun,Park"
-	 *
-	 * @param <T> 응답 타입
-	 */
-	interface RestRequestBodySpec<T> extends RestRequestFormSpec<T, RestRequestBodySpec<T>> {
+    /**
+     * REST 요청 명세 : Request Body
+     * 
+     * @author "Sangjun,Park"
+     *
+     * @param <T> 응답 타입
+     */
+    interface RestRequestBodySpec<T> extends RestRequestFormSpec<T, RestRequestBodySpec<T>> {
 
-		/**
-		 * 요청 body 설정
-		 * 
-		 * @param body
-		 * @return
-		 */
-		RestRequestBodySpec<T> body(Object body);
+        /**
+         * 요청 body 설정
+         * 
+         * @param body
+         * @return
+         */
+        RestRequestBodySpec<T> body(Object body);
 
         /**
          * 파일 첨부
@@ -363,6 +363,6 @@ public interface RestRequestSpec<T> {
          * @return
          */
         RestRequestBodySpec<T> addFile(String key, MultipartFile multipartFile);
-	}
+    }
 
 }

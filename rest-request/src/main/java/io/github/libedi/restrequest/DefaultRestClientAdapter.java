@@ -11,30 +11,29 @@ import org.springframework.web.client.RestTemplate;
  */
 public class DefaultRestClientAdapter implements RestClientAdapter {
 
-	private final RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
-	/**
-	 * RestClientAdapter 생성. 내부적으로 RestTemplate 기본 생성자를 통해 작동한다.
-	 */
-	public DefaultRestClientAdapter() {
-		restTemplate = new RestTemplate();
-	}
+    /**
+     * RestClientAdapter 생성. 내부적으로 RestTemplate 기본 생성자를 통해 작동한다.
+     */
+    public DefaultRestClientAdapter() {
+        restTemplate = new RestTemplate();
+    }
 
-	/**
-	 * RestClientAdapter 생성.
-	 * 
-	 * @param restTemplate
-	 * @throws IllegalArgumentException restTemplate 파라미터가 null인 경우
-	 */
-	public DefaultRestClientAdapter(final RestTemplate restTemplate) {
-		if (restTemplate == null) {
-			throw new IllegalArgumentException("RestTemplate must not be null.");
-		}
-		this.restTemplate = restTemplate;
-	}
+    /**
+     * RestClientAdapter 생성.
+     * 
+     * @param restTemplate
+     * @throws IllegalArgumentException restTemplate 파라미터가 null인 경우
+     */
+    public DefaultRestClientAdapter(final RestTemplate restTemplate) {
+        if (restTemplate == null) {
+            throw new IllegalArgumentException("RestTemplate must not be null.");
+        }
+        this.restTemplate = restTemplate;
+    }
 
-
-	@Override
+    @Override
     public <T> ResponseEntity<T> send(final RestRequest<T> restRequest) {
         if (restRequest == null) {
             throw new IllegalArgumentException("RestRequest must not be null.");
@@ -42,9 +41,9 @@ public class DefaultRestClientAdapter implements RestClientAdapter {
         if (restRequest.getTypeReference() == null) {
             return restTemplate.exchange(restRequest.getUri(), restRequest.getMethod(), restRequest.getHttpEntity(),
                     restRequest.getResponseType());
-		}
+        }
         return restTemplate.exchange(restRequest.getUri(), restRequest.getMethod(), restRequest.getHttpEntity(),
                 restRequest.getTypeReference());
-	}
+    }
 
 }
