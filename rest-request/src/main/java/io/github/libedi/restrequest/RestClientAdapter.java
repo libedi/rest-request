@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
  */
 public interface RestClientAdapter {
 
-	/**
+    /**
      * RestRequest의 요청 정보로 요청 전송
      * 
      * @param <T>
@@ -23,7 +23,7 @@ public interface RestClientAdapter {
      */
     <T> ResponseEntity<T> send(final RestRequest<T> restRequest);
 
-	/**
+    /**
      * RestRequest의 요청 정보로 요청 전송
      * 
      * @param <T>
@@ -32,7 +32,7 @@ public interface RestClientAdapter {
      */
     default <T> Optional<T> sendForBody(final RestRequest<T> restRequest) {
         return Optional.ofNullable(send(restRequest).getBody());
-	}
+    }
 
     /**
      * RestRequest의 요청 정보로 비동기 요청 전송

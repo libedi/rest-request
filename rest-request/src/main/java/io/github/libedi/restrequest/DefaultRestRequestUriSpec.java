@@ -17,21 +17,21 @@ import io.github.libedi.restrequest.RestRequestSpec.RestRequestUriSpec;
  */
 public class DefaultRestRequestUriSpec<T> implements RestRequestUriSpec<T> {
 
-	private Class<T> responseType;
-	private ParameterizedTypeReference<T> typeReference;
+    private Class<T> responseType;
+    private ParameterizedTypeReference<T> typeReference;
 
-	DefaultRestRequestUriSpec(final Class<T> responseType) {
-		this.responseType = Objects.requireNonNull(responseType, () -> "Response type must not be null.");
-	}
+    DefaultRestRequestUriSpec(final Class<T> responseType) {
+        this.responseType = Objects.requireNonNull(responseType, () -> "Response type must not be null.");
+    }
 
-	DefaultRestRequestUriSpec(final ParameterizedTypeReference<T> typeReference) {
-		this.typeReference = Objects.requireNonNull(typeReference, () -> "Response type must not be null.");
-	}
+    DefaultRestRequestUriSpec(final ParameterizedTypeReference<T> typeReference) {
+        this.typeReference = Objects.requireNonNull(typeReference, () -> "Response type must not be null.");
+    }
 
-	@Override
-	public RestRequestMethodSpec<T> uri(final URI uri) {
-		return new DefaultRestRequestMethodSpec<>(Objects.requireNonNull(uri, () -> "URI must not be null."),
-				responseType, typeReference);
-	}
+    @Override
+    public RestRequestMethodSpec<T> uri(final URI uri) {
+        return new DefaultRestRequestMethodSpec<>(Objects.requireNonNull(uri, () -> "URI must not be null."),
+                responseType, typeReference);
+    }
 
 }

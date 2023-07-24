@@ -6,11 +6,8 @@ import java.net.URI;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.core.SpringVersion;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -36,28 +33,26 @@ import io.github.libedi.restrequest.RestRequestSpec.RestRequestBodySpec;
  * @param <T>
  */
 public class DefaultRestRequestBodySpec<T> extends DefaultRestRequestFormSpec<T, RestRequestBodySpec<T>>
-		implements RestRequestBodySpec<T> {
+        implements RestRequestBodySpec<T> {
 
-    private final Pattern VERSION_PREFIX_PATTERN = Pattern.compile("(^[0-9]\\.[0-9]).*");
-
-	private Object body;
+    private Object body;
     private boolean isMultipart;
 
-	DefaultRestRequestBodySpec(final URI uri, final HttpMethod method, final Class<T> responseType,
-			final ParameterizedTypeReference<T> typeReference) {
-		super(uri, method, responseType, typeReference);
-	}
+    DefaultRestRequestBodySpec(final URI uri, final HttpMethod method, final Class<T> responseType,
+            final ParameterizedTypeReference<T> typeReference) {
+        super(uri, method, responseType, typeReference);
+    }
 
     @SuppressWarnings("unchecked")
     @Override
-	public RestRequestBodySpec<T> body(final Object body) {
-	    if (body instanceof MultiValueMap) {
-	        setParams((MultiValueMap<String, Object>) body);
-	    } else {
-	        this.body = body;
-	    }
-		return this;
-	}
+    public RestRequestBodySpec<T> body(final Object body) {
+        if (body instanceof MultiValueMap) {
+            setParams((MultiValueMap<String, Object>) body);
+        } else {
+            this.body = body;
+        }
+        return this;
+    }
 
     @Override
     public RestRequestBodySpec<T> addFile(final String key, final File file) {
@@ -82,19 +77,19 @@ public class DefaultRestRequestBodySpec<T> extends DefaultRestRequestFormSpec<T,
                     return multipartFile.getOriginalFilename();
                 }
             });
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new RuntimeException(e);
         }
         isMultipart = true;
         return this;
     }
 
-	@Override
-	public RestRequest<T> build() {
+    @Override
+    public RestRequest<T> build() {
         setMultipartData();
-		return new RestRequest<>(getUriWithQueryParam(), getMethod(), makeHttpEntity(), getResponseType(),
-				getTypeReference());
-	}
+        return new RestRequest<>(getUriWithQueryParam(), getMethod(), makeHttpEntity(), getResponseType(),
+                getTypeReference());
+    }
 
     private void setMultipartData() {
         if (!isMultipart && getParameter().entrySet().stream().anyMatch(this::hasMultipartFormData)) {
@@ -105,11 +100,11 @@ public class DefaultRestRequestBodySpec<T> extends DefaultRestRequestFormSpec<T,
         }
         if (body == null) {
             changeMultipartContentType(MediaType.MULTIPART_FORM_DATA_VALUE);
-        } else if (isSupportedMultipartMixed()) {
+        } else {
             changeMultipartContentType("multipart/mixed");
             try {
                 addParam("body", new ObjectMapper().writeValueAsString(body));
-            } catch (JsonProcessingException e) {
+            } catch (final JsonProcessingException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -126,35 +121,27 @@ public class DefaultRestRequestBodySpec<T> extends DefaultRestRequestFormSpec<T,
         }
     }
 
-	private URI getUriWithQueryParam() {
-		final UriComponentsBuilder builder = UriComponentsBuilder.fromUri(getUri());
-		if (hasQueryParameter()) {
+    private URI getUriWithQueryParam() {
+        final UriComponentsBuilder builder = UriComponentsBuilder.fromUri(getUri());
+        if (hasQueryParameter()) {
             getParameter().entrySet().stream()
                     .filter(entry -> !hasMultipartFormData(entry))
                     .forEach(entry -> builder.queryParam(entry.getKey(),
                             CollectionUtils.isEmpty(entry.getValue()) ? new Object[0] : entry.getValue().toArray()));
-		}
-		return builder.build().toUri();
-	}
+        }
+        return builder.build().toUri();
+    }
 
-	private boolean hasQueryParameter() {
+    private boolean hasQueryParameter() {
         return getParameter() != null && body != null && !isAvaliableMultipartMixedData();
-	}
+    }
 
     private boolean isAvaliableMultipartMixedData() {
-        return isMultipart && isSupportedMultipartMixed();
+        return isMultipart;
     }
 
-    private boolean isSupportedMultipartMixed() {
-        final Matcher matcher = VERSION_PREFIX_PATTERN.matcher(SpringVersion.getVersion());
-        if (matcher.find()) {
-            return Double.valueOf(matcher.group(1)).doubleValue() >= 5.2;
-        }
-        return false;
-    }
-
-	private HttpEntity<?> makeHttpEntity() {
+    private HttpEntity<?> makeHttpEntity() {
         return new HttpEntity<>(body == null || isAvaliableMultipartMixedData() ? getParameter() : body, getHeaders());
-	}
+    }
 
 }

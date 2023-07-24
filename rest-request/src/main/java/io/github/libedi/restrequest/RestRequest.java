@@ -20,61 +20,61 @@ import lombok.Getter;
 @Getter
 public class RestRequest<T> implements Serializable {
 
-	private static final long serialVersionUID = 6077646798610598311L;
+    private static final long serialVersionUID = 6077646798610598311L;
 
-	private final URI uri;
-	private final HttpMethod method;
-	private final HttpEntity<?> httpEntity;
-	private final Class<T> responseType;
-	private final ParameterizedTypeReference<T> typeReference;
+    private final URI uri;
+    private final HttpMethod method;
+    private final HttpEntity<?> httpEntity;
+    private final Class<T> responseType;
+    private final ParameterizedTypeReference<T> typeReference;
 
-	RestRequest(final URI uri, final HttpMethod method, final HttpEntity<?> httpEntity, final Class<T> responseType,
-			final ParameterizedTypeReference<T> typeReference) {
-		this.uri = uri;
-		this.method = method;
-		this.httpEntity = httpEntity;
-		this.responseType = responseType;
-		this.typeReference = typeReference;
-	}
+    RestRequest(final URI uri, final HttpMethod method, final HttpEntity<?> httpEntity, final Class<T> responseType,
+            final ParameterizedTypeReference<T> typeReference) {
+        this.uri = uri;
+        this.method = method;
+        this.httpEntity = httpEntity;
+        this.responseType = responseType;
+        this.typeReference = typeReference;
+    }
 
-	/**
-	 * Map&lt;String, Object&gt; 응답 타입
-	 * 
-	 * @return
-	 */
-	public static DefaultRestRequestUriSpec<Map<String, Object>> mapResp() {
-		return resp(new ParameterizedTypeReference<Map<String, Object>>() {});
-	}
+    /**
+     * Map&lt;String, Object&gt; 응답 타입
+     * 
+     * @return
+     */
+    public static DefaultRestRequestUriSpec<Map<String, Object>> mapResp() {
+        return resp(new ParameterizedTypeReference<Map<String, Object>>() {});
+    }
 
-	/**
-	 * T 타입의 응답 타입
-	 * 
-	 * @param <T>
-	 * @param responseType
-	 * @return
-	 */
+    /**
+     * T 타입의 응답 타입
+     * 
+     * @param <T>
+     * @param responseType
+     * @return
+     */
     public static <T> DefaultRestRequestUriSpec<T> resp(final Class<T> responseType) {
-		return new DefaultRestRequestUriSpec<>(responseType);
-	}
+        return new DefaultRestRequestUriSpec<>(responseType);
+    }
 
-	/**
-	 * T 타입의 제네릭 응답 타입
-	 * 
-	 * @param <T>
-	 * @param typeReference
-	 * @return
-	 */
+    /**
+     * T 타입의 제네릭 응답 타입
+     * 
+     * @param <T>
+     * @param typeReference
+     * @return
+     */
     public static <T> DefaultRestRequestUriSpec<T> resp(final ParameterizedTypeReference<T> typeReference) {
-		return new DefaultRestRequestUriSpec<>(typeReference);
-	}
-	
-	/**
-	 * 응답값이 없는 경우
-	 * 
-	 * @return
-	 */
+        return new DefaultRestRequestUriSpec<>(typeReference);
+    }
+
+    /**
+     * 응답값이 없는 경우
+     * 
+     * @return
+     */
     public static DefaultRestRequestUriSpec<Void> nonResp() {
-		return new DefaultRestRequestUriSpec<>(Void.class);
-	}
+        return new DefaultRestRequestUriSpec<>(Void.class);
+    }
 
 }
