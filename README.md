@@ -66,54 +66,64 @@ Afterwards, you can set HTTP Headers, Query Parameters, Form Datas, and Request 
 
 - **HTTP Header**  
 HTTP Header can be added as an **`addHeader()`, `accept()`, `contentType()`, `authorization()`, `basicAuth()`** and **`bearerToken()`** methods.
-~~~java
-RestRequest.resp(ResponseType.class)
-           .uri(uri)
-           .get()
-           .addHeader("headerName", "headerValue")
-           .accept(MediaType.APPLICATION_JSON)  // Support type : MediaType, String
-           .contentType("application/json")     // Support type : MediaType, String
-           .authorization("authValue")
-           .basicAuth("username", "password")
-           .bearerToken("tokenValue")
-~~~
+    ~~~java
+    RestRequest.resp(ResponseType.class)
+               .uri(uri)
+               .get()
+               .addHeader("headerName", "headerValue")
+               .accept(MediaType.APPLICATION_JSON)  // Support type : MediaType, String
+               .contentType("application/json")     // Support type : MediaType, String
+               .authorization("authValue")
+               .basicAuth("username", "password")
+               .bearerToken("tokenValue")
+    ~~~
 - **Form Parameter**  
 You can add Form Parameters with the **`addParam()`, `setParams()`** methods.  
 If you previously specified `get()` / `delete()`, Query Parameter is generated, and if `post()` / `put()` / `patch()` is specified, Form Data is generated.  
 If both Request Body and Form Parameter are set, they are generated as Query Parameters, even if `post()` / `put()` / `patch()` is specified.
-~~~java
-// Generate a Query Parameter
-RestRequest.resp(ResponseType.class)
-           .uri(uri)
-           .get()
-           .addParam("paramKey", "paramValue")  // Add Query Parameter : key-value
-           .setParams(multiValueMap)            // Add Query Parameter : MultiValueMap<String, Object>
-           .setParams(map)                      // Add Query Parameter : Map<String, Object>
-           .setParams(object)                   // Add Query Parameter : Object
+    ~~~java
+    // Generate a Query Parameter
+    RestRequest.resp(ResponseType.class)
+               .uri(uri)
+               .get()
+               .addParam("paramKey", "paramValue")  // Add Query Parameter : key-value
+               .setParams(multiValueMap)            // Add Query Parameter : MultiValueMap<String, Object>
+               .setParams(map)                      // Add Query Parameter : Map<String, Object>
+               .setParams(object)                   // Add Query Parameter : Object
 
-// Generate Form Datas
-RestRequest.resp(ResponseType.class)
-           .uri(uri)
-           .post()
-           .addParam("paramKey", "paramValue")
-~~~
+    // Generate Form Datas
+    RestRequest.resp(ResponseType.class)
+               .uri(uri)
+               .post()
+               .addParam("paramKey", "paramValue")
+    ~~~
 - **Request Body**  
 You can set it as a **`body()`** method. (You can call the `body()` method only when specifying `post()` / `put()` / `patch()` methods.)
-~~~java
-RestRequest.resp(ResponseType.class)
-           .put()
-           .addParam("queryParamKey", "queryParamValue")  // Generate Query Parameter
-           .body(requestBodyObject)
-~~~
+    ~~~java
+    RestRequest.resp(ResponseType.class)
+               .put()
+               .addParam("queryParamKey", "queryParamValue")  // Generate Query Parameter
+               .body(requestBodyObject)
+    ~~~
 - **Attach File**  
-You can set it as a **`addFile()`** method. The supported parameter types are `File`, `Path`, and `MultipartFile`. If the Content Type header is not set, it is automatically set to the value `multipart/form-data`. If Request Body is set and Spring version is 5.2 or higher, it is set to `multipart/mixed`. However, since Request Body is set as a key called `body` in the form data, it is recommended to set it directly using `addParam()` if possible. (You can call the `addFile()` method only when specifying `post()` / `put()` / `patch()` methods.)
-~~~java
-RestRequest.resp(ResponseType.class)
-           .post()
-           .addFile("file1", new File("test.txt"))
-           .addFile("file2", Paths.get("test.txt"))
-           .addFile("file3", multipartFile)
-~~~
+You can set it as a **`addFile()`** method. The supported parameter types are `File`, `Path`, and `MultipartFile`. If the Content Type header is not set, it is automatically set to the value `multipart/form-data`.
+    ~~~java
+    RestRequest.resp(ResponseType.class)
+               .post()
+               .addFile("file1", new File("test.txt"))
+               .addFile("file2", Paths.get("test.txt"))
+               .addFile("file3", multipartFile)
+    ~~~
+    If Request Body is set and Spring version is 5.2 or higher, it is set to `multipart/mixed`. However, since Request Body is set as a key called `body` in the form data, it is recommended to set it directly using `addParam()` if possible. (You can call the `addFile()` method only when specifying `post()` / `put()` / `patch()` methods.)
+    ~~~java
+    RestRequest.resp(ResponseType.class)
+               .uri(uri)
+               .post()
+               .contentType(MediaType.MULTIPART_MIXED)
+               .addParam("json", new ObjectMapper().writeValueAsString(body))
+               .addFile("attach", Paths.get("test.txt"))
+               .build();
+    ~~~
 
 ### **5. build()**
 Finally, call **`build()`** method to generate `RestRequest`.  
@@ -213,16 +223,16 @@ public class WebService {
 - Java 8 or higher
 - Spring Web 4.3 or higher
 
-## **Install**
+## **Installation**
 - ### **Maven**
 ~~~xml
 <dependency>
     <groupId>io.github.libedi</groupId>
     <artifactId>rest-request</artifactId>
-    <version>2.1.0</version>
+    <version>2.1.1</version>
 </dependency>
 ~~~
 - ### **Gradle**
 ~~~groovy
-implementation 'io.github.libedi:rest-request:2.1.0'
+implementation 'io.github.libedi:rest-request:2.1.1'
 ~~~

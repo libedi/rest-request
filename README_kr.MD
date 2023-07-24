@@ -66,54 +66,66 @@ RestRequest.resp(ResponseType.class)
 
 - **HTTP Header**  
 HTTP Header는 **`addHeader()`, `accept()`, `contentType()`, `authorization()`, `basicAuth()`, `bearerToken()`** 메소드로 추가할 수 있습니다.
-~~~java
-RestRequest.resp(ResponseType.class)
-           .uri(uri)
-           .get()
-           .addHeader("headerName", "headerValue")
-           .accept(MediaType.APPLICATION_JSON)  // 지원타입 : MediaType, String
-           .contentType("application/json")     // 지원타입 : MediaType, String
-           .authorization("authValue")
-           .basicAuth("username", "password")
-           .bearerToken("tokenValue")
-~~~
+    ~~~java
+    RestRequest.resp(ResponseType.class)
+               .uri(uri)
+               .get()
+               .addHeader("headerName", "headerValue")
+               .accept(MediaType.APPLICATION_JSON)  // 지원타입 : MediaType, String
+               .contentType("application/json")     // 지원타입 : MediaType, String
+               .authorization("authValue")
+               .basicAuth("username", "password")
+               .bearerToken("tokenValue")
+    ~~~
 - **Form Parameter**  
 **`addParam()`, `setParams()`** 메소드로 Form Parameter를 추가할 수 있습니다.  
 이전에 `get()` / `delete()`를 지정했다면, Query Parameter가 생성되고, `post()` / `put()` / `patch()`를 지정했다면, Form Data가 생성됩니다.  
 만약, `post()` / `put()` / `patch()`를 지정했더라도, Request Body와 Form Parameter 둘 다 설정되었다면, Query Parameter로 생성됩니다.
-~~~java
-// Query Parameter 생성
-RestRequest.resp(ResponseType.class)
-           .uri(uri)
-           .get()
-           .addParam("paramKey", "paramValue")  // Query Parameter 추가 : key-value 방식
-           .setParams(multiValueMap)            // Query Parameter 추가 : MultiValueMap<String, Object>
-           .setParams(map)                      // Query Parameter 추가 : Map<String, Object>
-           .setParams(object)                   // Query Parameter 추가 : Object
+    ~~~java
+    // Query Parameter 생성
+    RestRequest.resp(ResponseType.class)
+               .uri(uri)
+               .get()
+               .addParam("paramKey", "paramValue")  // Query Parameter 추가 : key-value 방식
+               .setParams(multiValueMap)            // Query Parameter 추가 : MultiValueMap<String, Object>
+               .setParams(map)                      // Query Parameter 추가 : Map<String, Object>
+               .setParams(object)                   // Query Parameter 추가 : Object
 
-// Form Data 생성
-RestRequest.resp(ResponseType.class)
-           .uri(uri)
-           .post()
-           .addParam("paramKey", "paramValue")
-~~~
+    // Form Data 생성
+    RestRequest.resp(ResponseType.class)
+               .uri(uri)
+               .post()
+               .addParam("paramKey", "paramValue")
+    ~~~
 - **Request Body**  
 **`body()`** 메소드로 설정할 수 있습니다. (`post()` / `put()` / `patch()` 지정시에만 `body()` 메소드를 호출할 수 있습니다.)
-~~~java
-RestRequest.resp(ResponseType.class)
-           .put()
-           .addParam("queryParamKey", "queryParamValue")  // Query Parameter로 생성
-           .body(requestBodyObject)
-~~~
+    ~~~java
+    RestRequest.resp(ResponseType.class)
+               .uri(uri)
+               .put()
+               .addParam("queryParamKey", "queryParamValue")  // Query Parameter로 생성
+               .body(requestBodyObject)
+    ~~~
 - **파일 첨부**  
-**`addFile()`** 메소드로 설정할 수 있습니다. 지원하는 파라미터 형식은 `File`, `Path`, `MultipartFile`입니다. Content Type 헤더가 설정되어 있지 않으면, 자동으로 `multipart/form-data`값으로 설정합니다. Request Body가 설정되어 있고, Spring 버전이 5.2 이상이면 `multipart/mixed`로 설정됩니다. 다만, Request Body는 form data에 `body`라는 key로 설정되므로, 가능하면 `addParam()`을 이용하여 직접 설정하시길 권장드립니다. (`post()` / `put()` / `patch()` 지정시에만 `addFile()` 메소드를 호출할 수 있습니다.)
-~~~java
-RestRequest.resp(ResponseType.class)
-           .post()
-           .addFile("file1", new File("test.txt"))
-           .addFile("file2", Paths.get("test.txt"))
-           .addFile("file3", multipartFile)
-~~~
+**`addFile()`** 메소드로 설정할 수 있습니다. 지원하는 파라미터 형식은 `File`, `Path`, `MultipartFile`입니다. Content Type 헤더가 설정되어 있지 않으면, 자동으로 `multipart/form-data`값으로 설정합니다.
+    ~~~java
+    RestRequest.resp(ResponseType.class)
+               .uri(uri)
+               .post()
+               .addFile("file1", new File("test.txt"))
+               .addFile("file2", Paths.get("test.txt"))
+               .addFile("file3", multipartFile)
+    ~~~
+    Request Body가 설정되어 있고, Spring 버전이 5.2 이상이면 `multipart/mixed`로 설정됩니다. 다만, Request Body는 form data에 `body`라는 key로 설정되므로, 가능하면 `addParam()`을 이용하여 직접 설정하시길 권장드립니다. (`post()` / `put()` / `patch()` 지정시에만 `addFile()` 메소드를 호출할 수 있습니다.)
+    ~~~java
+    RestRequest.resp(ResponseType.class)
+               .uri(uri)
+               .post()
+               .contentType(MediaType.MULTIPART_MIXED)
+               .addParam("json", new ObjectMapper().writeValueAsString(body))
+               .addFile("attach", Paths.get("test.txt"))
+               .build();
+    ~~~
 
 ### **5. build()**
 최종적으로 **`build()`** 를 호출하여 `RestRequest`를 생성합니다.  
@@ -219,10 +231,10 @@ public class WebService {
 <dependency>
     <groupId>io.github.libedi</groupId>
     <artifactId>rest-request</artifactId>
-    <version>2.1.0</version>
+    <version>2.1.1</version>
 </dependency>
 ~~~
 - ### **Gradle**
 ~~~groovy
-implementation 'io.github.libedi:rest-request:2.1.0'
+implementation 'io.github.libedi:rest-request:2.1.1'
 ~~~
