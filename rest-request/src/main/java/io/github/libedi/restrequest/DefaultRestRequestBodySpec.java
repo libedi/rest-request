@@ -12,6 +12,7 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.util.CollectionUtils;
@@ -21,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.github.libedi.restrequest.RestRequestSpec.RestRequestBodySpec;
@@ -103,7 +105,12 @@ public class DefaultRestRequestBodySpec<T> extends DefaultRestRequestFormSpec<T,
         } else {
             changeMultipartContentType("multipart/mixed");
             try {
-                addParam("body", new ObjectMapper().writeValueAsString(body));
+                final ObjectMapper objectMapper = new ObjectMapper()
+                        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                final String partBody = objectMapper.writeValueAsString(body);
+                final HttpHeaders partHeader = new HttpHeaders();
+                partHeader.setContentType(MediaType.APPLICATION_JSON);
+                addParam("body", new HttpEntity<>(partBody, partHeader));
             } catch (final JsonProcessingException e) {
                 throw new RuntimeException(e);
             }

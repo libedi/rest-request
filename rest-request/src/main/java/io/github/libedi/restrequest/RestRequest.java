@@ -8,8 +8,6 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 
-import lombok.Getter;
-
 /**
  * REST 요청 생성을 위한 RestRequest
  * 
@@ -17,7 +15,6 @@ import lombok.Getter;
  *
  * @param <T>
  */
-@Getter
 public class RestRequest<T> implements Serializable {
 
     private static final long serialVersionUID = 6077646798610598311L;
@@ -75,6 +72,26 @@ public class RestRequest<T> implements Serializable {
      */
     public static DefaultRestRequestUriSpec<Void> nonResp() {
         return new DefaultRestRequestUriSpec<>(Void.class);
+    }
+
+    public URI getUri() {
+        return uri;
+    }
+
+    public HttpMethod getMethod() {
+        return method;
+    }
+
+    public HttpEntity<?> getHttpEntity() {
+        return httpEntity;
+    }
+
+    public Class<T> getResponseType() {
+        return responseType;
+    }
+
+    public ParameterizedTypeReference<T> getTypeReference() {
+        return typeReference;
     }
 
 }

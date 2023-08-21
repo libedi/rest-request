@@ -20,8 +20,6 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import io.github.libedi.restrequest.RestRequestSpec.RestRequestFormSpec;
-import lombok.AccessLevel;
-import lombok.Getter;
 
 /**
  * REST 요청 명세 : Query Params / Form Data
@@ -31,7 +29,6 @@ import lombok.Getter;
  * @param <T>
  * @param <S>
  */
-@Getter(AccessLevel.PROTECTED)
 public class DefaultRestRequestFormSpec<T, S extends RestRequestFormSpec<T, S>>
         extends AbstractRestRequestHeaderSpec<T, S> implements RestRequestFormSpec<T, S> {
 
@@ -91,10 +88,11 @@ public class DefaultRestRequestFormSpec<T, S extends RestRequestFormSpec<T, S>>
     @Override
     public S setParams(final Object object) {
         Objects.requireNonNull(object, () -> "Parameter must not be null.");
-        Assert.isTrue((object instanceof Collection) == false, "Parameter must not be Collection.");
+        Assert.isTrue(!(object instanceof Collection), "Parameter must not be Collection.");
 
-        ReflectionUtils.doWithFields(object.getClass(), field -> handleParameterValue(field, object),
-                field -> Modifier.isStatic(field.getModifiers()) == false);
+        ReflectionUtils.doWithFields(object.getClass(),
+                field -> handleParameterValue(field, object),
+                field -> !Modifier.isStatic(field.getModifiers()));
         return (S) this;
     }
 
@@ -121,8 +119,8 @@ public class DefaultRestRequestFormSpec<T, S extends RestRequestFormSpec<T, S>>
 
     private URI getUriWithQueryParam() {
         final UriComponentsBuilder builder = UriComponentsBuilder.fromUri(getUri());
-        if (getParameter() != null) {
-            for (final Entry<String, List<Object>> entry : getParameter().entrySet()) {
+        if (parameter != null) {
+            for (final Entry<String, List<Object>> entry : parameter.entrySet()) {
                 builder.queryParam(entry.getKey(),
                         entry.getValue() != null ? entry.getValue().toArray() : new Object[0]);
             }
@@ -130,4 +128,7 @@ public class DefaultRestRequestFormSpec<T, S extends RestRequestFormSpec<T, S>>
         return builder.build().toUri();
     }
 
+    protected MultiValueMap<String, Object> getParameter() {
+        return parameter;
+    }
 }

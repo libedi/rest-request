@@ -19,6 +19,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -26,6 +27,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.github.libedi.restrequest.RestRequest;
@@ -33,6 +35,9 @@ import lombok.Builder;
 import lombok.Getter;
 
 public class RestRequestTest {
+
+    private final ObjectMapper objectMapper = new ObjectMapper()
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
     @Getter
     @Builder
@@ -214,7 +219,12 @@ public class RestRequestTest {
             assertThat(form.get("attach")).first().isInstanceOf(FileSystemResource.class);
             assertThat(form.get("attach")).first().usingRecursiveComparison()
                     .isEqualTo(new FileSystemResource(attachPath.toFile()));
-            assertThat(form.get("body")).first().asString().isEqualTo(new ObjectMapper().writeValueAsString(body));
+            assertThat(form.get("body")).first().isInstanceOf(HttpEntity.class).satisfies(part -> {
+                @SuppressWarnings("unchecked")
+                final HttpEntity<String> bodyPart = (HttpEntity<String>) part;
+                assertThat(bodyPart.getBody()).isEqualTo(objectMapper.writeValueAsString(body));
+                assertThat(bodyPart.getHeaders().getContentType()).isEqualTo(MediaType.APPLICATION_JSON);
+            });
         });
     }
 
@@ -233,7 +243,7 @@ public class RestRequestTest {
                 .uri("http://www.test.com/upload")
                 .post()
                 .contentType("multipart/mixed")
-                .addParam("requestBody", new ObjectMapper().writeValueAsString(body))
+                .addParam("requestBody", objectMapper.writeValueAsString(body))
                 .addFile("attach", attachPath)
                 .build();
 
@@ -247,7 +257,7 @@ public class RestRequestTest {
             assertThat(form.get("attach")).first().usingRecursiveComparison()
                     .isEqualTo(new FileSystemResource(attachPath.toFile()));
             assertThat(form.get("requestBody")).first().asString()
-                    .isEqualTo(new ObjectMapper().writeValueAsString(body));
+                    .isEqualTo(objectMapper.writeValueAsString(body));
         });
     }
 }
