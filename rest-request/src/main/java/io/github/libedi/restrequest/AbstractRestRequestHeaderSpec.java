@@ -9,8 +9,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 
 import io.github.libedi.restrequest.RestRequestSpec.RestRequestHeaderSpec;
-import lombok.AccessLevel;
-import lombok.Getter;
 
 /**
  * REST 요청 명세 : HTTP Header
@@ -20,7 +18,6 @@ import lombok.Getter;
  * @param <T>
  * @param <S>
  */
-@Getter(AccessLevel.PROTECTED)
 public abstract class AbstractRestRequestHeaderSpec<T, S extends RestRequestHeaderSpec<T, S>>
         implements RestRequestHeaderSpec<T, S> {
 
@@ -37,10 +34,6 @@ public abstract class AbstractRestRequestHeaderSpec<T, S extends RestRequestHead
         this.responseType = responseType;
         this.typeReference = typeReference;
         this.headers = new HttpHeaders();
-    }
-
-    protected HttpHeaders getHeaders() {
-        return HttpHeaders.readOnlyHttpHeaders(headers);
     }
 
     @SuppressWarnings("unchecked")
@@ -78,6 +71,26 @@ public abstract class AbstractRestRequestHeaderSpec<T, S extends RestRequestHead
     public S authorization(final String authValue) {
         headers.set(HttpHeaders.AUTHORIZATION, authValue);
         return (S) this;
+    }
+
+    protected HttpHeaders getHeaders() {
+        return HttpHeaders.readOnlyHttpHeaders(headers);
+    }
+
+    protected URI getUri() {
+        return uri;
+    }
+
+    protected HttpMethod getMethod() {
+        return method;
+    }
+
+    protected Class<T> getResponseType() {
+        return responseType;
+    }
+
+    protected ParameterizedTypeReference<T> getTypeReference() {
+        return typeReference;
     }
 
 }
