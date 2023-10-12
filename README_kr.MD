@@ -116,7 +116,7 @@ HTTP Header는 **`addHeader()`, `accept()`, `contentType()`, `authorization()`, 
                .addFile("file2", Paths.get("test.txt"))
                .addFile("file3", multipartFile)
     ~~~
-    Request Body가 설정되어 있고, Spring 버전이 5.2 이상이면 `multipart/mixed`로 설정됩니다. 다만, Request Body는 form data에 `body`라는 key로 설정되므로, 가능하면 `addParam()`을 이용하여 직접 설정하시길 권장드립니다. (`post()` / `put()` / `patch()` 지정시에만 `addFile()` 메소드를 호출할 수 있습니다.)
+    Request Body가 설정되어 있으면 `multipart/mixed`로 설정됩니다. 다만, Request Body는 form data에 `body`라는 key로 설정되므로, 가능하면 `addParam()`을 이용하여 직접 설정하시길 권장드립니다. (`post()` / `put()` / `patch()` 지정시에만 `addFile()` 메소드를 호출할 수 있습니다.)
     ~~~java
     RestRequest.resp(ResponseType.class)
                .uri(uri)
@@ -223,7 +223,7 @@ public class WebService {
 
 ## **최소사양**
 - Java 8 이상
-- Spring Web 4.3 이상
+- Spring Web 5.3.25 이상
 
 ## **설치**
 - ### **Maven**
@@ -231,10 +231,10 @@ public class WebService {
 <dependency>
     <groupId>io.github.libedi</groupId>
     <artifactId>rest-request</artifactId>
-    <version>2.1.1</version>
+    <version>2.1.2</version>
 </dependency>
 ~~~
 - ### **Gradle**
 ~~~groovy
-implementation 'io.github.libedi:rest-request:2.1.1'
+implementation 'io.github.libedi:rest-request:2.1.2'
 ~~~

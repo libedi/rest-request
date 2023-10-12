@@ -114,7 +114,7 @@ You can set it as a **`addFile()`** method. The supported parameter types are `F
                .addFile("file2", Paths.get("test.txt"))
                .addFile("file3", multipartFile)
     ~~~
-    If Request Body is set and Spring version is 5.2 or higher, it is set to `multipart/mixed`. However, since Request Body is set as a key called `body` in the form data, it is recommended to set it directly using `addParam()` if possible. (You can call the `addFile()` method only when specifying `post()` / `put()` / `patch()` methods.)
+    If Request Body is set, it is set to `multipart/mixed`. However, since Request Body is set as a key called `body` in the form data, it is recommended to set it directly using `addParam()` if possible. (You can call the `addFile()` method only when specifying `post()` / `put()` / `patch()` methods.)
     ~~~java
     RestRequest.resp(ResponseType.class)
                .uri(uri)
@@ -221,7 +221,7 @@ public class WebService {
 
 ## **Requirements**
 - Java 8 or higher
-- Spring Web 4.3 or higher
+- Spring Web 5.3.25 or higher
 
 ## **Installation**
 - ### **Maven**
@@ -229,10 +229,10 @@ public class WebService {
 <dependency>
     <groupId>io.github.libedi</groupId>
     <artifactId>rest-request</artifactId>
-    <version>2.1.1</version>
+    <version>2.1.2</version>
 </dependency>
 ~~~
 - ### **Gradle**
 ~~~groovy
-implementation 'io.github.libedi:rest-request:2.1.1'
+implementation 'io.github.libedi:rest-request:2.1.2'
 ~~~
